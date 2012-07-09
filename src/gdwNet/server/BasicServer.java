@@ -11,13 +11,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public abstract class BasicServer
 {
 	// constants
 	private static final long JOINREQUEST_TIMEOUT = 1000;
 
-	// Threads
+	// threads
 	private  MulticastresponceThread mThread;
 	private final BroadcastresponceThread bThread;
 	private final IncommingConnectionHandlerThread iThread;
@@ -32,7 +33,7 @@ public abstract class BasicServer
 	protected final long serverId;
 
 	// to work with
-	private final LinkedList<JoinRequestWrapper> requests;
+	private final ConcurrentLinkedQueue<JoinRequestWrapper> requests;
 
 	public BasicServer(int maxPlayer, String infoText) throws IOException
 	{
@@ -45,7 +46,7 @@ public abstract class BasicServer
 		this.serverId = new Random().nextLong();
 
 		// to work with
-		this.requests = new LinkedList<JoinRequestWrapper>();
+		this.requests = new ConcurrentLinkedQueue<JoinRequestWrapper>();
 		GDWServerLogger.logMSG("Server loaded");
 
 		// start Threads
@@ -91,7 +92,7 @@ public abstract class BasicServer
 					byte responceCode = RESPONCECODES.OK;
 					String name = null;
 					int port = 0;
-					JoinRequestWrapper req = this.requests.pop();
+					JoinRequestWrapper req = this.requests.poll();
 					ByteBuffer buf = ByteBuffer
 							.allocate(NETCONSTANTS.PACKAGELENGTH);
 					buf.clear();
