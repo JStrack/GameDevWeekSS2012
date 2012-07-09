@@ -28,7 +28,7 @@ import javax.swing.JTextField;
  * diese Schnittstelle sagt euch wie ihr momentan als Client verbunden seit, was so an Servern im Netzwerk 
  * rumläuft bietet einen Verbindungsstelle zum Server. 
  * 
- * Der Code ist haupstächlich für die Gui da, also nicht von relevanz. Das was wichtig ist ist kommentiert.
+ * Der Code ist haupstächlich für die Gui da, also nicht von Relevanz. Das was wichtig ist ist kommentiert.
  * 
  * @author firen
  *

@@ -75,7 +75,7 @@ public class ChatServer extends BasicServer
 	 * @param client Eine Referenz auf den Spieler
 	 */
 	@Override
-	protected void PlayerDisconnected(BasicClientConnection client)
+	protected void playerDisconnected(BasicClientConnection client)
 	{
 		this.coreLoop.addLeaverName(client.getName());
 

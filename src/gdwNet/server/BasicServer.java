@@ -269,11 +269,11 @@ public abstract class BasicServer
 		
 	}
 
-	protected abstract void PlayerDisconnected(BasicClientConnection client);
+	protected abstract void playerDisconnected(BasicClientConnection client);
 
 	private void disconnectPlayer(BasicClientConnection client)
 	{
-		PlayerDisconnected(client);
+		playerDisconnected(client);
 		--this.currentConnections;
 		this.clientConnections.remove(client.id);
 
