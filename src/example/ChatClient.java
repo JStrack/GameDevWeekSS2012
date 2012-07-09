@@ -26,7 +26,7 @@ import javax.swing.JTextField;
 /**
  * Wieder so eine must-have Klasse, hier habe ich die Schnittstelle {@link BasicClientListener} implementiert
  * diese Schnittstelle sagt euch wie ihr momentan als Client verbunden seit, was so an Servern im Netzwerk 
- * rumläuft bietet einen Verbindungsstelle zum Server.
+ * rumläuft bietet einen Verbindungsstelle zum Server. 
  * 
  * Der Code ist haupstächlich für die Gui da, also nicht von relevanz. Das was wichtig ist ist kommentiert.
  * 
