@@ -16,10 +16,12 @@ import gdwUtils.DefaultCharSet;
  */
 public class MyBasicClientConnection extends BasicClientConnection
 {
+	protected final String name;
 
-	public MyBasicClientConnection(ConnectionInfo info, BasicServer ref)
+	public MyBasicClientConnection(ConnectionInfo info, BasicServer ref, String name)
 	{
 		super(info, ref);
+		this.name = name;
 	}
 
 	@Override

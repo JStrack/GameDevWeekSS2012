@@ -10,13 +10,13 @@ public abstract class BasicClientConnection
 {
 	private static final int messagesPerUpdate = 5;
 
-	private final DatagramChannel udpConnection;
+	private  DatagramChannel udpConnection;
 
-	private final SocketChannel tcpConnection;
+	private  SocketChannel tcpConnection;
+	
+	protected final int sharedSecret;
 
-	protected final int id;
-
-	protected final String name;
+	protected int id;
 
 	private long lastHearthbeat;
 
@@ -30,12 +30,12 @@ public abstract class BasicClientConnection
 	{
 		this.ref = ref;
 		this.id = info.id;
-		this.name = info.name;
 		this.lastHearthbeat = System.currentTimeMillis();
 		this.discoFlag = false;
 		this.pongRequest = -1L;
 		this.udpConnection = info.udpConnection;
 		this.tcpConnection = info.tcpConnection;
+		this.sharedSecret = info.sharedSecret;
 		
 		try
 		{
@@ -47,7 +47,7 @@ public abstract class BasicClientConnection
 		}
 		
 	}
-
+	
 	public boolean checkForDisconnect(long current)
 	{
 		if ((this.lastHearthbeat + NETCONSTANTS.HEARTBEAT_REQUESTIME) < current)
@@ -73,24 +73,6 @@ public abstract class BasicClientConnection
 	public boolean isDisconnectFlaged()
 	{
 		return discoFlag;
-	}
-
-	public void sendMsg(ByteBuffer buf, boolean safe)
-	{
-		try
-		{
-			buf.flip();
-			if (safe)
-			{
-				this.tcpConnection.write(buf);
-
-			} else
-			{
-				this.udpConnection.write(buf);
-			}
-		} catch (IOException e)
-		{}
-
 	}
 
 	private void sendPing(long currentTimeStamp)
@@ -139,12 +121,12 @@ public abstract class BasicClientConnection
 		}
 	}
 
-	public void sendMSG(ByteBuffer msg, boolean isSafe)
+	public void sendMSG(ByteBuffer msg, boolean reliable)
 	{
 		msg.flip();
 		try
 		{
-			if (isSafe)
+			if (reliable)
 			{
 				this.tcpConnection.write(msg);
 			} else
@@ -196,7 +178,7 @@ public abstract class BasicClientConnection
 
 	}
 
-	private void incommingMsg(ByteBuffer buf, boolean wasSafe)
+	private void incommingMsg(ByteBuffer buf, boolean wasReliable)
 	{
 		buf.position(0);
 		switch (buf.get())
@@ -209,23 +191,24 @@ public abstract class BasicClientConnection
 			break;
 
 		case NETCONSTANTS.MESSAGE:
-			this.incommingMessage(buf, wasSafe);
+			this.incommingMessage(buf, wasReliable);
 
 		default:
 			break;
 		}
 	}
 
-	protected abstract void incommingMessage(ByteBuffer buf, boolean wasSafe);
+	protected void revive(ConnectionInfo info)
+	{
+		this.tcpConnection = info.tcpConnection;
+		this.udpConnection = info.udpConnection;
+		this.discoFlag = false;	
+	}
+	
+	protected abstract void incommingMessage(ByteBuffer buf, boolean wasReliable);
 
 	public int getId()
 	{
 		return id;
 	}
-
-	public String getName()
-	{
-		return name;
-	}
-
 }

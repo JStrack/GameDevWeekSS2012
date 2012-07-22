@@ -3,8 +3,11 @@ package example;
 import gdwNet.server.BasicClientConnection;
 import gdwNet.server.BasicServer;
 import gdwNet.server.ConnectionInfo;
+import gdwUtils.DefaultCharSet;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.HashSet;
 
 /**
  * Beispielimplementierung für den Server. 
@@ -17,6 +20,8 @@ import java.io.IOException;
 public class ChatServer extends BasicServer
 {
 	private ServerCoreLoop coreLoop;
+	
+	private HashSet<String> takenNames; 
 
 	/**
 	 * Ihr müsste der Basisklasse die Spieleranzahl und den Infotext übergeben
@@ -27,7 +32,10 @@ public class ChatServer extends BasicServer
 	 */
 	public ChatServer(int maxPlayer, String infoText) throws IOException
 	{
-		super(maxPlayer, infoText);
+		super(maxPlayer, infoText,false,false);
+		
+		this.takenNames = new HashSet<>();
+		
 		this.coreLoop = new ServerCoreLoop(this);
 		this.coreLoop.start();
 	}
@@ -54,21 +62,31 @@ public class ChatServer extends BasicServer
 	 * @param info Enthällt alle Informationen
 	 */
 	@Override
-	protected BasicClientConnection incommingConnection(ConnectionInfo info)
+	protected BasicClientConnection incommingConnection(ConnectionInfo info,
+			ByteBuffer data)
 	{
-		// Beispielabfrage
-		if (info.name.equals("Hoden"))
+		try
+		{
+			byte[] arr = new byte[data.get()];
+			data.get(arr);
+			String name = new String(arr, DefaultCharSet.getDefaultCharset());
+			if(name.equalsIgnoreCase("idiot"))
+			{
+				return null;
+			}else if(this.takenNames.contains(name))
+			{
+				return null;
+			}else
+			{
+				return new MyBasicClientConnection(info, this, name);
+			}
+		}catch (Exception e)
 		{
 			return null;
 		}
-
-		// ich akzeptiere und möchte den Namen den anderen mitteilen
-		this.coreLoop.addJoinerName(info.name);
-		
-		// Rückgabe von meiner Implementierung von BasicClientConnction
-		return new MyBasicClientConnection(info, this);
 	}
-
+	
+	
 	/**
 	 * Ein Spieler hat die Verbindungverloren, das kann euer verschulden sein(kick)
 	 * oder er hat einfach die Verbindung verloren.
@@ -77,8 +95,7 @@ public class ChatServer extends BasicServer
 	@Override
 	protected void playerDisconnected(BasicClientConnection client)
 	{
-		this.coreLoop.addLeaverName(client.getName());
-
+		this.coreLoop.addLeaverName(((MyBasicClientConnection)client).name);
 	}
 
 	/**
@@ -91,5 +108,14 @@ public class ChatServer extends BasicServer
 	{
 		this.coreLoop.addMessage(name + ":> " + msg);
 	}
+	
+
+	@Override
+	protected void playerReconnected(BasicClientConnection client)
+	{
+		this.coreLoop.addJoinerName(((MyBasicClientConnection)client).name);		
+	}
+
+	
 
 }

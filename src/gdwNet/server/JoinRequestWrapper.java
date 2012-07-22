@@ -1,25 +1,19 @@
 package gdwNet.server;
 
-import java.io.IOException;
-import java.nio.channels.SocketChannel;
+import java.nio.ByteBuffer;
+
 
 public class JoinRequestWrapper
 {
-	public final SocketChannel socket;
+	public final ConnectionInfo info;
 	public final long timestamp;
+	public final ByteBuffer data;
 
-	public JoinRequestWrapper(SocketChannel socket)
+	public JoinRequestWrapper(ConnectionInfo info, ByteBuffer data)
 	{
-		this.socket = socket;
+		this.info = info;
 		this.timestamp = System.currentTimeMillis();
-		try
-		{
-			GDWServerLogger.logMSG(socket.getRemoteAddress().toString()
-					+ " versucht verbindung aufzubauchen");
-		} catch (IOException e)
-		{
-
-		}
+		this.data = data;
 	}
 
 }

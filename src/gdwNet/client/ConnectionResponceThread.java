@@ -21,19 +21,19 @@ public class ConnectionResponceThread extends Thread
 
 	private final ServerInfo info;
 
-	private final String name;
-
 	private boolean pending;
-
+	
+	private final ServerInfo  server;
+	
 
 	public ConnectionResponceThread(SocketChannel tcpSocket,
-			DatagramChannel udpSocket, ByteBuffer buf, ServerInfo info,
-			String name)
+			DatagramChannel udpSocket, ByteBuffer buf, ServerInfo info)
 	{
 		this.tcpSocket = tcpSocket;
 		try
 		{
 			this.tcpSocket.socket().setTcpNoDelay(true);
+			this.tcpSocket.socket().setKeepAlive(true);
 		} catch (SocketException e)
 		{
 
@@ -41,17 +41,18 @@ public class ConnectionResponceThread extends Thread
 		this.udpSocket = udpSocket;
 		this.buf = buf;
 		this.info = info;
-		this.name = name;
 		this.pending = true;
+		this.server = info;
 		new ConnetionResponceThreadTimeoutHelper(this);
 		this.start();
 	}
+	
 
 
 	@Override
 	public void run()
 	{
-		BasicClientListener lis = BasicClient.getListener();
+		IBasicClientListener lis = BasicClient.getListener();
 		try
 		{
 
@@ -73,6 +74,7 @@ public class ConnectionResponceThread extends Thread
 			} catch (IOException e)
 			{
 				lis.connectionUpdate(RESPONCECODES.TIMEOUT);
+				return;
 			}
 
 			// get responce
@@ -82,7 +84,7 @@ public class ConnectionResponceThread extends Thread
 			if (resCode != RESPONCECODES.OK)
 			{
 				// clean up
-
+				lis.connectionUpdate(resCode);
 				this.tcpSocket.close();
 				this.udpSocket.close();
 				return;
@@ -91,11 +93,9 @@ public class ConnectionResponceThread extends Thread
 			tcpSocket.configureBlocking(false);
 			int udpPort = responce.getInt();
 			int id = responce.getInt();
+			int secret = responce.getInt();
 
 			// nat punch through and udp socket
-
-
-
 			udpSocket.connect(new InetSocketAddress(tcpSocket.socket()
 					.getInetAddress(), udpPort));
 
@@ -106,7 +106,7 @@ public class ConnectionResponceThread extends Thread
 			this.udpSocket.configureBlocking(false);
 			// create client
 			this.pending = false;
-			BasicClient.registerClient(tcpSocket, udpSocket, id, name);
+			BasicClient.registerClient(tcpSocket, udpSocket, id, secret, server );
 		} catch (IOException e)
 		{
 			lis.connectionUpdate(RESPONCECODES.UNREACHABLE);

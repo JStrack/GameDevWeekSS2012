@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -24,9 +25,9 @@ public class ServerlistPendingThread extends Thread
 
 	private final DatagramSocket socket;
 
-	private final BasicClientListener lis;
+	private final IBasicClientListener lis;
 
-	public ServerlistPendingThread(BasicClientListener lis)
+	public ServerlistPendingThread(IBasicClientListener lis)
 			throws SocketException
 	{
 		this.lis = lis;
@@ -87,6 +88,7 @@ public class ServerlistPendingThread extends Thread
 				result.add(InetAddress.getByName(sringResult));
 			}
 		}
+		scanner.close();
 		return result;
 	}
 
@@ -127,11 +129,15 @@ public class ServerlistPendingThread extends Thread
 			DatagramPacket packet = new DatagramPacket(new byte[0], 0, group,
 					NETCONSTANTS.BROADCAST_PORT);
 			this.socket.send(packet);
+			
+			//workaround for loopbackdevice
+			broadcastIps.add(InetAddress.getByName("127.0.0.1"));
 
 			// send broadcasts s s s s
 			while (!broadcastIps.isEmpty())
 			{
 				packet.setAddress(broadcastIps.pop());
+				packet.setPort(NETCONSTANTS.BROADCAST_PORT);
 				this.socket.send(packet);
 			}
 
@@ -150,7 +156,7 @@ public class ServerlistPendingThread extends Thread
 					int maxPlayer = buf.getInt();
 					int port = buf.getInt();
 					long id = buf.getLong();
-					byte[] arr = new byte[buf.capacity() - buf.position()];
+					byte[] arr = new byte[buf.get()];
 					buf.get(arr);
 					String infoMsg = new String(arr);
 					int ping = (int) (System.currentTimeMillis() - startTime);

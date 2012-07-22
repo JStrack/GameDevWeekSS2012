@@ -1,13 +1,20 @@
 package gdwNet.server;
 
+import gdwNet.NETCONSTANTS;
+import gdwNet.RESPONCECODES;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.nio.channels.ClosedByInterruptException;
+import java.net.SocketTimeoutException;
+import java.nio.ByteBuffer;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
+import java.util.Random;
 
 public class IncommingConnectionHandlerThread extends Thread
 {
+	private final static int WAIT_SOTIMEOUT = 600;
+
 	private final ServerSocketChannel socket;
 	private final BasicServer ref;
 	private boolean close;
@@ -24,7 +31,6 @@ public class IncommingConnectionHandlerThread extends Thread
 		this.boundPort = this.socket.socket().getLocalPort();
 		this.close = false;
 
-
 		this.start();
 	}
 
@@ -33,30 +39,101 @@ public class IncommingConnectionHandlerThread extends Thread
 	{
 		while (!close)
 		{
-			SocketChannel socket;
+			SocketChannel socket = null;
 			try
 			{
 				socket = this.socket.accept();
 				socket.socket().setTcpNoDelay(true);
-				this.ref.handshake(socket);
-			} catch (ClosedByInterruptException e)
+				socket.configureBlocking(true);
+				socket.socket().setKeepAlive(true);
+				socket.socket().setSoTimeout(WAIT_SOTIMEOUT);
+				
+				
+				//get Input
+				ByteBuffer buf = ByteBuffer.allocate(NETCONSTANTS.PACKAGELENGTH);
+				if(socket.read(buf)<0)
+				{
+					sendError(RESPONCECODES.TIMEOUT, socket);
+					continue;
+				}
+				// message validate
+				
+				int id = -1;
+				int sharedSecredt = new Random().nextInt();
+				int udpPort = -1;
+				boolean recoRequest = false;
+					
+				buf.position(0);
+				if (buf.get() == NETCONSTANTS.MAGIC_LOGIN_CODE)
+				{
+					//port
+					udpPort = buf.getInt();
+					
+					//reco?
+					switch (buf.get())
+					{
+					case NETCONSTANTS.CONNECT:
+						recoRequest = false;
+						
+					break;
+					
+					case NETCONSTANTS.RECONNECT:
+						recoRequest = true;
+						id = buf.getInt();
+						sharedSecredt = buf.getInt();
+					break;
+
+					default:
+						sendError(RESPONCECODES.DATA_CORRUPTED, socket);
+						continue;
+					}
+
+				} else
+				{
+					sendError(RESPONCECODES.DATA_CORRUPTED, socket);
+				}// magiccode
+				
+				//tcp, udp socket create
+				ConnectionInfo info = new ConnectionInfo(socket, udpPort, id, sharedSecredt);
+				
+				if(recoRequest)
+				{
+					this.ref.addReconnectRequest(info);
+				}else
+				{
+					this.ref.addJoinRequest(info,buf);
+				}
+				
+			} catch (SocketTimeoutException e)
 			{
-				this.close = true;
-			} catch (IOException e)
+				continue;
+			} catch (Exception e)
 			{
-				this.close = true;
-				e.printStackTrace();
+				sendError(RESPONCECODES.DATA_CORRUPTED, socket);
 			}
+	
 		}
+		
+	}
+
+	private void sendError(byte code, SocketChannel socket)
+	{
+		if(socket == null)
+			return;
+		
+		ByteBuffer buf =  ByteBuffer.allocate(1);
+		buf.put(code);
 		try
 		{
-			this.socket.close();
+			socket.write(buf);
+			socket.close();
 		} catch (IOException e)
 		{
-
+			//its ok...
 		}
-		GDWServerLogger.logMSG("IncommingConHandlerThread beendet");
+		
 	}
+		
 
 	public int getBoundPort()
 	{

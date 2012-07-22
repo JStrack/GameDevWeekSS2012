@@ -12,15 +12,17 @@ public final class NETCONSTANTS
 
     public static final byte MESSAGE = 5;
     
+    public static final byte RECONNECT = 6;
+    
 
     //constants
     public static final int PACKAGELENGTH = 256;
 
-	public static final int USERPACKAGELENGHT = 255;
-
 	public static final int BROADCAST_PORT = 8888;
 	
 	public static final String MULITCASTGROUP = "225.1.33.7";
+	
+	public static final String DEFAULT_INFOTEXT = "GDW-Default Greeter";
 
 
     /*
@@ -38,6 +40,8 @@ public final class NETCONSTANTS
 	public static final long PONG_TIMEOUT = 500L;
 
 	public static final long HEARTBEAT_REQUESTIME = 1000L;
+	
+	public static final long DISPOSE_LEAVERDATA_TTL = 10000L;
 
 
 }

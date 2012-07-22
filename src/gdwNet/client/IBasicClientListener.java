@@ -2,7 +2,7 @@ package gdwNet.client;
 
 import java.nio.ByteBuffer;
 
-public interface BasicClientListener
+public interface IBasicClientListener
 {
 	public void serverResponce(ServerInfo info);
 
@@ -10,6 +10,6 @@ public interface BasicClientListener
 
 	public void connectionEstablished(BasicClient clientRef);
 
-	public void incommingMessage(ByteBuffer msg, boolean wasSafe);
+	public void incommingMessage(ByteBuffer msg, boolean wasReliable);
 
 }

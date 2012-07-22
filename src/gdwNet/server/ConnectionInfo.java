@@ -7,27 +7,44 @@ import java.nio.channels.SocketChannel;
 
 public class ConnectionInfo
 {
-	public final String name;
 	
 	public final int id;
 	
 	public final SocketChannel tcpConnection;
 	
 	public final DatagramChannel udpConnection;
+	
+	protected final int sharedSecret;
 
 	public ConnectionInfo(SocketChannel tcpConnection,
- int port, String name,
-			int id) throws IOException
+ int port,
+			int id, int secret) throws IOException
 	{
-		this.name = name;
 		this.id = id;
 		this.tcpConnection = tcpConnection;
 
+		this.sharedSecret = secret;
 		this.udpConnection = DatagramChannel.open();
 		this.udpConnection.socket().bind(null);
 		this.udpConnection.connect(new InetSocketAddress(tcpConnection.socket()
 				.getInetAddress(), port));
 
+	}
+	
+	/**
+	 * Don´t run this methode manually.
+	 */
+	public void closeOpenSockets()
+	{
+		try
+		{
+			this.udpConnection.close();
+			this.tcpConnection.close();
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		
 	}
 	
 	

@@ -13,7 +13,7 @@ public final class RESPONCECODES
 
     public static final byte DATA_CORRUPTED = 2;
 
-    public static final byte RECONNECT_REFUSE = 3;
+    public static final byte CONNECT_REFUSE = 3;
 
 	public static final byte NICK_TAKEN = 4;
 
@@ -30,6 +30,8 @@ public final class RESPONCECODES
 	public static final byte UNREACHABLE = 9;
 
 	public static final byte CONNECTED = 10;
+	
+	public static final byte RECONNECTING = 11;
 
 
 

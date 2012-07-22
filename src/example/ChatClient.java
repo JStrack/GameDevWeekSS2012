@@ -2,7 +2,7 @@ package example;
 
 import gdwNet.RESPONCECODES;
 import gdwNet.client.BasicClient;
-import gdwNet.client.BasicClientListener;
+import gdwNet.client.IBasicClientListener;
 import gdwNet.client.ServerInfo;
 import gdwUtils.DefaultCharSet;
 
@@ -24,7 +24,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 /**
- * Wieder so eine must-have Klasse, hier habe ich die Schnittstelle {@link BasicClientListener} implementiert
+ * Wieder so eine must-have Klasse, hier habe ich die Schnittstelle {@link IBasicClientListener} implementiert
  * diese Schnittstelle sagt euch wie ihr momentan als Client verbunden seit, was so an Servern im Netzwerk 
  * rumläuft bietet einen Verbindungsstelle zum Server. 
  * 
@@ -33,7 +33,7 @@ import javax.swing.JTextField;
  * @author firen
  *
  */
-public class ChatClient extends JFrame implements BasicClientListener
+public class ChatClient extends JFrame implements IBasicClientListener
 {
 	private static final long serialVersionUID = 1L;
 	private final JList<String> serverList;
@@ -184,7 +184,17 @@ public class ChatClient extends JFrame implements BasicClientListener
 				JOptionPane.showMessageDialog(this, "Der Loginname ist leer!");
 				return;
 			}
-			BasicClient.connectToServer(address, port, name);
+			ByteBuffer buf = ByteBuffer.allocate(50);
+			try
+			{
+				byte [] arr = name.getBytes(DefaultCharSet.getDefaultCharset());
+				buf.put((byte)arr.length);
+				buf.put(arr);
+			}catch (Exception e)
+			{
+				throw e;
+			}
+			BasicClient.connectToServer(address, port,buf);
 		} catch (UnknownHostException e)
 		{
 			JOptionPane.showMessageDialog(this, e.getMessage());
@@ -268,7 +278,7 @@ public class ChatClient extends JFrame implements BasicClientListener
 				text = "Dein Nick ist unkreativ";
 				break;
 			// Er mag einen nicht haben, erblockt alle Verbindungsversuche
-			case RESPONCECODES.RECONNECT_REFUSE:
+			case RESPONCECODES.CONNECT_REFUSE:
 				text = "Er mag uns nicht";
 				break;
 			// Er ist voll
@@ -323,7 +333,18 @@ public class ChatClient extends JFrame implements BasicClientListener
 				.getSelectedIndex());
 
 		// und los gehts
-		BasicClient.connectToServer(info, name);
+		ByteBuffer buf = ByteBuffer.allocate(50);
+		try
+		{
+			byte [] arr = name.getBytes(DefaultCharSet.getDefaultCharset());
+			buf.put((byte)arr.length);
+			buf.put(arr);
+		}catch (Exception e)
+		{
+			throw e;
+		}	
+		
+		BasicClient.connectToServer(info,buf);
 
 	}
 	

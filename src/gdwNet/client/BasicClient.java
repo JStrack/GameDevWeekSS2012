@@ -2,7 +2,6 @@ package gdwNet.client;
 
 import gdwNet.NETCONSTANTS;
 import gdwNet.RESPONCECODES;
-import gdwUtils.DefaultCharSet;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -12,14 +11,15 @@ import java.nio.channels.DatagramChannel;
 import java.nio.channels.SocketChannel;
 /**
  * Die Hauptlientklasse. Sie hat keinen öffentlichen Konstruktor, sondern gibt euch über einen 
- * registierten {@link BasicClientListener} ein Objekt diese Klassen, wenn die Verbindung erfolgreich
+ * registierten {@link IBasicClientListener} ein Objekt diese Klassen, wenn die Verbindung erfolgreich
  * aufgebaut wurde.
  * 
  * Diese Klasse stellt die Verbindung zum Server da. Sie gibt einen NachrichtenbyteBuffer und
  * kann Nachrichten zum Server senden.
  * @author firen
  *
- */
+ */ 
+
 public class BasicClient
 {
 	private static final int messagesPerUpdate = 5;
@@ -31,22 +31,24 @@ public class BasicClient
 	private static ServerlistPendingThread pendingThread = null;
 
 	protected final int id;
-
-	protected final String name;
+	
+	protected final int sharedSecret;
 
 	private static BasicClient ClientSingelton = null;
 
-	private static BasicClientListener listener = null;
+	private static IBasicClientListener listener = null;
 
 	private long lastHearthbeat;
 
 	private long pongRequest;
 
 	private boolean discoFlag;
+	
+	private final ServerInfo lastServer;
 
 
 	private BasicClient(DatagramChannel udpConnection,
-			SocketChannel tcpConnection, int id, String name)
+			SocketChannel tcpConnection, int id, int secret, ServerInfo server)
 	{
 		this.udpConnection = udpConnection;
 		this.tcpConnection = tcpConnection;
@@ -58,27 +60,28 @@ public class BasicClient
 		}
 
 		this.id = id;
-		this.name = name;
 		this.lastHearthbeat = System.currentTimeMillis();
 		this.pongRequest = -1L;
 		this.discoFlag = false;
+		this.sharedSecret = secret;
+		this.lastServer = server;
 	}
 
 	/**
-	 * Registiert einen {@link BasicClientListener} beim Client.
+	 * Registiert einen {@link IBasicClientListener} beim Client.
 	 * Erforderlich, da ihr sonst überhaupt nicht verbinden könnt^^.
 	 * @param lis Einen Referenz auf eueren Listener
 	 */
-	public static void setListener(BasicClientListener lis)
+	public static void setListener(IBasicClientListener lis)
 	{
 		BasicClient.listener = lis;
 	}
 
 	/**
-	 * @return Gibt eine Referenz auf den aktuellen {@link BasicClientListener} zurück.
+	 * @return Gibt eine Referenz auf den aktuellen {@link IBasicClientListener} zurück.
 	 * Null wenn nichts registiert ist.
 	 */
-	public static BasicClientListener getListener()
+	public static IBasicClientListener getListener()
 	{
 		return BasicClient.listener;
 	}
@@ -112,13 +115,13 @@ public class BasicClient
 	 * aber sicher seit das er auf den übergebenen Addresse zu finden ist.
 	 * @param address IPaddresse des Servers, muss nicht IPv4 sein, aber empfholen
 	 * @param port Der Port aufdem der Server lauscht
-	 * @param name Euer gewählter Nickname
+	 * @param additionalData daten die ihr zur Anmeldung zusätzlich schicken wollt
 	 */
 	public static void connectToServer(InetAddress address, int port,
-			String name)
+			ByteBuffer additionalData)
 	{
 		ServerInfo info = new ServerInfo("", 0, 0, 0, port, address, 0);
-		BasicClient.connectToServer(info, name);
+		BasicClient.connectToServer(info, additionalData);
 	}
 
 	/**
@@ -126,9 +129,9 @@ public class BasicClient
 	 * Benutzt diese Methode mit den Daten die ihr bekommten habt beim Durchsuchen
 	 * des Netzwerkes
 	 * @param info Serverinfodaten
-	 * @param name Euer gewählter Nickname
+	 * @param additionalData daten die ihr zur Anmeldung zusätzlich schicken wollt
 	 */
-	public static void connectToServer(ServerInfo info, String name)
+	public static void connectToServer(ServerInfo info, ByteBuffer additionalData)
 	{
 		try
 		{
@@ -140,16 +143,41 @@ public class BasicClient
 			buf.clear();
 			buf.put(NETCONSTANTS.MAGIC_LOGIN_CODE);// magic code
 			buf.putInt(udpSocket.socket().getLocalPort());// udp port
-			byte[] nameBytes = name.getBytes(DefaultCharSet.getDefaultCharset());
-			buf.putInt(nameBytes.length);
-			buf.put(nameBytes);// name
+			buf.put(NETCONSTANTS.CONNECT);//what we want
+			additionalData.flip();
+			buf.put(additionalData);
 			buf.flip();
 
 			// connect
-			BasicClientListener lis = BasicClient.getListener();
+			IBasicClientListener lis = BasicClient.getListener();
 			lis.connectionUpdate(RESPONCECODES.CONNECTING);
 
-			new ConnectionResponceThread(tcpSocket, udpSocket, buf, info, name);
+			new ConnectionResponceThread(tcpSocket, udpSocket, buf, info);
+		} catch (IOException e)
+		{
+			BasicClient.getListener().connectionUpdate(
+					RESPONCECODES.UNREACHABLE);
+		}
+	}
+	
+	public void reconnect()
+	{
+		try
+		{
+			SocketChannel tcpSocket = SocketChannel.open();
+			DatagramChannel udpSocket = DatagramChannel.open();
+			udpSocket.socket().bind(null);
+			
+			ByteBuffer buf = ByteBuffer.allocate(NETCONSTANTS.PACKAGELENGTH);
+			buf.clear();
+			buf.put(NETCONSTANTS.MAGIC_LOGIN_CODE);// magic code
+			buf.putInt(udpSocket.socket().getLocalPort());// udp port
+			buf.put(NETCONSTANTS.RECONNECT);//what we want
+			buf.putInt(this.id);
+			buf.putInt(this.sharedSecret);
+			buf.flip();
+		
+			new ConnectionResponceThread(tcpSocket, udpSocket, buf, this.lastServer);
 		} catch (IOException e)
 		{
 			BasicClient.getListener().connectionUpdate(
@@ -158,9 +186,9 @@ public class BasicClient
 	}
 	
 	protected static void registerClient(SocketChannel tcp,
-			DatagramChannel udp, int id, String name)
+			DatagramChannel udp, int id, int sharedSecret, ServerInfo server)
 	{
-		BasicClient client = new BasicClient(udp, tcp, id, name);
+		BasicClient client = new BasicClient(udp, tcp, id, sharedSecret , server);
 		BasicClient.ClientSingelton = client;
 		BasicClient.listener.connectionEstablished(ClientSingelton);
 
@@ -216,7 +244,7 @@ public class BasicClient
 
 	}
 
-	private void incommingMessage(ByteBuffer buf, boolean wasSafe)
+	private void incommingMessage(ByteBuffer buf, boolean wasReliable)
 	{
 		buf.position(0);
 		switch (buf.get())
@@ -229,7 +257,7 @@ public class BasicClient
 				break;
 
 			case NETCONSTANTS.MESSAGE:
-				listener.incommingMessage(buf, wasSafe);
+				listener.incommingMessage(buf, wasReliable);
 
 			default:
 				break;
@@ -247,6 +275,7 @@ public class BasicClient
 				if ((pongRequest + NETCONSTANTS.PONG_TIMEOUT) < currentTimeStamp)
 				{
 					// not alive
+					this.discoFlag = true;
 					return true;
 				}
 			} else
@@ -257,7 +286,7 @@ public class BasicClient
 		}
 		return false;
 	}
-
+	
 	private void disconnect()
 	{
 		listener.connectionUpdate(RESPONCECODES.DISCONNECTED);
@@ -274,14 +303,14 @@ public class BasicClient
 	/**
 	 * Ruft die Methode auf um einen Nachricht an den Server zu senden.
 	 * @param msg Eure Nachricht
-	 * @param isSafe true wenn gesichert(TCP), false wenn ungesichert (UDP)
+	 * @param wasReliable true wenn gesichert(TCP), false wenn ungesichert (UDP)
 	 */
-	public void sendMSG(ByteBuffer msg, boolean isSafe)
+	public void sendMSG(ByteBuffer msg, boolean wasReliable)
 	{
 		msg.flip();
 		try
 		{
-			if (isSafe)
+			if (wasReliable)
 			{
 				this.tcpConnection.write(msg);
 			} else

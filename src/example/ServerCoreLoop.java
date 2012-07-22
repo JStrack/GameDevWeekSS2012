@@ -58,7 +58,7 @@ public class ServerCoreLoop extends Thread
 			}
 
 			// ruf die updateMethode vom Server auf, es werden keinen eingehenden Verbindungen geblockt
-			this.ref.proccedInputData(false);
+			this.ref.proccedInputData();
 			// überpüfen ob jemand dazu kam
 			if (!this.joinerNames.isEmpty())
 			{
