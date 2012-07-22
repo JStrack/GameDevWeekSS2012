@@ -19,7 +19,7 @@ public abstract class BasicServer
 
 	private MulticastresponceThread mThread;
 	private final BroadcastresponseThread bThread;
-	private final IncommingConnectionHandlerThread iThread;
+	private final IncomingConnectionHandlerThread iThread;
 
 	// *attributes*
 	/** maximum allowed clients on server */
@@ -93,7 +93,7 @@ public abstract class BasicServer
 		GDWServerLogger.logMSG("Server loaded");
 
 		// start Threads
-		this.iThread = new IncommingConnectionHandlerThread(this);
+		this.iThread = new IncomingConnectionHandlerThread(this);
 		GDWServerLogger.logMSG("TCP thread started on port "
 				+ this.iThread.getBoundPort());
 
@@ -305,7 +305,7 @@ public abstract class BasicServer
 			{
 				JoinRequestWrapper req = this.joinRequests.poll();
 				//highlevel
-				BasicClientConnection client = incommingConnection(req.info, req.data);
+				BasicClientConnection client = incomingConnection(req.info, req.data);
 				if(client != null)
 				{
 					//lowlevel
@@ -335,7 +335,7 @@ public abstract class BasicServer
 		}
 	}
 	
-	private void proccedIncomming()
+	private void proccedIncoming()
 	{
 		//handle reconnector and leaver cleanup
 		if(!blockReconnector)
@@ -462,7 +462,7 @@ public abstract class BasicServer
 
 	public void proccedInputData()
 	{
-		this.proccedIncomming();
+		this.proccedIncoming();
 		Iterator<Integer> iter = this.clientConnections.keySet().iterator();
 		LinkedList<Integer> toLeave = new LinkedList<Integer>();
 		while (iter.hasNext())
@@ -490,7 +490,7 @@ public abstract class BasicServer
 	
 	protected abstract void playerReconnected(BasicClientConnection client);
 	
-	protected abstract BasicClientConnection incommingConnection(
+	protected abstract BasicClientConnection incomingConnection(
 			ConnectionInfo info, ByteBuffer data);
 
 	private void disconnectPlayer(BasicClientConnection client)
@@ -610,6 +610,11 @@ public abstract class BasicServer
 			this.updateBroadcastMessage(updatePart.CUSTOM_ATTACHMENT);
 			throw e;
 		}
+	}
+	
+	public BasicClientConnection getPlayerByID(int id)
+	{
+		return this.clientConnections.get(id);
 	}
 
 	/**

@@ -62,7 +62,7 @@ public class ChatServer extends BasicServer
 	 * @param info Enthällt alle Informationen
 	 */
 	@Override
-	protected BasicClientConnection incommingConnection(ConnectionInfo info,
+	protected BasicClientConnection incomingConnection(ConnectionInfo info,
 			ByteBuffer data)
 	{
 		try

@@ -11,7 +11,7 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.Random;
 
-public class IncommingConnectionHandlerThread extends Thread
+public class IncomingConnectionHandlerThread extends Thread
 {
 	private final static int WAIT_SOTIMEOUT = 600;
 
@@ -20,7 +20,7 @@ public class IncommingConnectionHandlerThread extends Thread
 	private boolean close;
 	private final int boundPort;
 
-	protected IncommingConnectionHandlerThread(BasicServer ref)
+	protected IncomingConnectionHandlerThread(BasicServer ref)
 			throws IOException
 	{
 		this.ref = ref;
