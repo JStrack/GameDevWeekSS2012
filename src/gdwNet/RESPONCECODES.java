@@ -1,6 +1,6 @@
 package gdwNet;
 
-
+// Test
 
 public final class RESPONCECODES
 {
