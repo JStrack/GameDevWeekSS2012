@@ -1,0 +1,12 @@
+workspace/
+.settings/
+
+Thumbs.db
+*.bak
+*.cache
+*.ilk
+*.log
+[Bb]in
+*.lib
+*.sbr
+
