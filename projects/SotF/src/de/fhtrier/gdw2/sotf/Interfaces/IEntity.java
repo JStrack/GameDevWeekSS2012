@@ -1,8 +1,8 @@
-package Interfaces;
+package de.fhtrier.gdw2.sotf.Interfaces;
 
 import org.newdawn.slick.geom.Vector2f;
-import java.util.List;
-import org.newdawn.slick.Graphics;
+import java.awt.Graphics;
+import org.newdawn.slick.*;
 
 public interface IEntity {
 	
