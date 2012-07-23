@@ -1,6 +1,9 @@
-package Interfaces;
+package de.fhtrier.gdw2.sotf.Interfaces;
 
 import org.newdawn.slick.geom.Vector2f;
+
+
+
 import java.util.List;
 
 public interface IPlayer extends IEntity {
@@ -28,19 +31,19 @@ public interface IPlayer extends IEntity {
 	 * @param number the number of the Usable in the player's Inventory
 	 * @return the Usable item that is to be placed on the world
 	 */
-	public abstract IUsable use(int number);
+	public abstract IUseable use(int number);
 	
 	
 	/**
-	 * @return the Inventory of the player as an array of Usables
+	 * @return the Inventory of the player as an array of Useables
 	 */
-	public abstract IUsable[] getInventory();
+	public abstract IUseable[] getInventory();
 	
 	
 	/**
 	 * @return list of Powerups that are currently active on the player
 	 */
-	public abstract List<IPowerup> getPowerups();
+	public abstract List<IPowerups> getPowerups();
 	
 	
 	/**

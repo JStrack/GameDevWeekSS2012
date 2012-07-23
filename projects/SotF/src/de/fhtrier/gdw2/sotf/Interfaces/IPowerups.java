@@ -1,4 +1,4 @@
-package de.fhtrier.gdw.sotf.interfaces;
+package de.fhtrier.gdw2.sotf.Interfaces;
 
 /**
  * Interface zur Verwaltung der Powerups.

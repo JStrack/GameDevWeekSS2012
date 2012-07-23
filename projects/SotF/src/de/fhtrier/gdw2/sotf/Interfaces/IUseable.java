@@ -1,6 +1,7 @@
-package de.fhtrier.gdw.sotf.interfaces;
+package de.fhtrier.gdw2.sotf.Interfaces;
 
 import java.util.List;
+
 
 /**
  * Interface für die benutzbaren Items im Inventar.

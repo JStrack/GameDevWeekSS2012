@@ -1,6 +1,7 @@
-package de.fhtrier.gdw.sotf.interfaces;
+package de.fhtrier.gdw2.sotf.Interfaces;
 
 import java.util.List;
+
 
 /**
  * Interface zur Verwaltung eines Eatable.

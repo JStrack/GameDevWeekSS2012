@@ -1,8 +1,8 @@
-package Interfaces;
+package de.fhtrier.gdw2.sotf.Interfaces;
 
 import org.newdawn.slick.geom.Vector2f;
-import java.util.List;
 import java.awt.Graphics;
+import org.newdawn.slick.*;
 
 public interface IEntity {
 	
@@ -16,7 +16,7 @@ public interface IEntity {
 	/**
 	 * @param time ??????
 	 */
-	public abstract void update(int time);
+	public abstract void update(GameContainer gamecontainer, int deltaTime);
 	
 	
 	/**
