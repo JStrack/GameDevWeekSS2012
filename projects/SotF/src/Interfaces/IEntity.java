@@ -2,7 +2,7 @@ package Interfaces;
 
 import org.newdawn.slick.geom.Vector2f;
 import java.util.List;
-import java.awt.Graphics;
+import org.newdawn.slick.Graphics;
 
 public interface IEntity {
 	
@@ -14,7 +14,7 @@ public interface IEntity {
 	
 	
 	/**
-	 * @param time ??????
+	 * @param time milliseconds passed since last update
 	 */
 	public abstract void update(int time);
 	
