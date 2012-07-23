@@ -2,7 +2,6 @@ package example;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.InterfaceAddress;
 import java.util.LinkedList;
 import java.util.Scanner;
 
