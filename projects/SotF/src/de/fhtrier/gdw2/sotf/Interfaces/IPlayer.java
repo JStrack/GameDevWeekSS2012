@@ -18,6 +18,17 @@ public interface IPlayer extends IEntity {
 	 */
 	public abstract Vector2f getVelocity();
 	
+	/**
+	 * Zeigt, ob Spieler der lokale Spieler ist oder nicht
+	 * @author Robin Dick
+	 */
+	public boolean isLocalPlayer();
+
+	/**
+	 * Setzt, ob der Spieler der lokale Spieler ist
+	 * @param isLocalPlayer
+	 */
+	public void setIsLocalPlayer(boolean isLocalPlayer);
 	
 	/**
 	 * @param eat the Eatable item that affects the player

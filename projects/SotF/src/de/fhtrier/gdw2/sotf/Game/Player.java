@@ -15,9 +15,11 @@ public class Player extends Entity implements IPlayer{
 	private IUseable[] inventory;
 	private List<IPowerups> powerups;
 	private ITeam team;
+	private boolean isLocalPlayer;
 
-	public Player(Vector2f position, float radius, int id, Image image) {
+	public Player(Vector2f position, float radius, int id, boolean isLocalPlayer, Image image) {
 		super(position, radius, id, image);
+		this.isLocalPlayer = isLocalPlayer;
 	}
 
 	@Override
@@ -37,7 +39,6 @@ public class Player extends Entity implements IPlayer{
 	 * @param delta Millisekunden seit dem letzten Update-Schritt
 	 */
 	private void controll(GameContainer gc, int delta) {
-		// TODO: Feststellen, ob der Player wirklich der lokale Spieler ist!
 		float changeX = 0f;
 		float changeY = 0f;
 		
@@ -60,15 +61,14 @@ public class Player extends Entity implements IPlayer{
 		float x = this.getPosition().getX() + changeX;
 		float y = this.getPosition().getY() + changeY;
 		
-		//System.out.println("X: "+this.getPosition().getX()+" | Y: "+this.getPosition().getY());
-		
 		this.setPosition(x, y);
 	}
 	
 	@Override
 	public void update(GameContainer gameContainer, int time) {
 		// Steuerung
-		controll(gameContainer,time);
+		if (isLocalPlayer)
+			controll(gameContainer,time);
 		
 		if (powerups != null) {
 			// Duration der Power-ups anpassen/prüfen
@@ -173,6 +173,16 @@ public class Player extends Entity implements IPlayer{
 	public float getEnergy() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public boolean isLocalPlayer() {
+		return isLocalPlayer;
+	}
+
+	@Override
+	public void setIsLocalPlayer(boolean isLocalPlayer) {
+		this.isLocalPlayer = isLocalPlayer;
 	}
 
 }
