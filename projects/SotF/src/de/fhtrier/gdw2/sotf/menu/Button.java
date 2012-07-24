@@ -9,7 +9,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 
-import de.fhtrier.gdw.sotf.states.MainMenuState;
+import de.fhtrier.gdw2.sotf.states.MainMenuState;
 import de.fhtrier.gdw2.sotf.Interfaces.IActionListener;
 
 /**

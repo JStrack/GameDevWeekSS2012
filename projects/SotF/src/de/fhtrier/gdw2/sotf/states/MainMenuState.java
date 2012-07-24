@@ -13,7 +13,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-//import de.fhtrier.gdw2.sotf.Interfaces.IActionListener;
+import de.fhtrier.gdw2.sotf.Interfaces.IActionListener;
 import de.fhtrier.gdw2.sotf.menu.Button;
 
 public class MainMenuState extends BasicGameState {
@@ -42,8 +42,8 @@ public class MainMenuState extends BasicGameState {
         addCenteredButton("Options", x, y);
         addCenteredButton("Help", x, y + h * 1);
         addCenteredButton("Exit", x, y + h * 2);
-       /* for(Button b: buttons)
-            b.init(container, this);*/
+        for(Button b: buttons)
+            b.init(container, this);
     }
 
     @Override
