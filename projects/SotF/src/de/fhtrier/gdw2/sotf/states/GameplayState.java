@@ -53,7 +53,7 @@ public class GameplayState extends BasicGameState
 		this.container = container;
 		this.game = game;
 		
-    	//world = new World();
+    	world = new World();
         // by Robin:
         // Player p = new Player(new Vector2f(32,32), 32, 1, new
         // Image("Kreis.png")); // TODO: delete
@@ -81,7 +81,7 @@ public class GameplayState extends BasicGameState
      */
     public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException
     {
-        //world.update(gc, delta);
+        world.update(container, delta);
     }
 
     @Override

@@ -47,10 +47,10 @@ public class MenuPageRoot extends MenuPage {
 		addLeftAlignedButton("Credits", x, y + h * 2, font, new MenuPageAction(menuState, credits));
 		
 		addCenteredButton("Exit", 943, 710, font,
-				new IActionListener() {
-			public void onAction() {
-				System.exit(0); // todo
-			}
-		});
+			new IActionListener() {
+				public void onAction() {
+					System.exit(0); // todo
+				}
+			});
 	}
 }
