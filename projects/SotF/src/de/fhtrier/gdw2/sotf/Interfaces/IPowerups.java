@@ -12,7 +12,7 @@ public interface IPowerups
 
     enum PowerupType
     {
-        SPEED, IMMORTAL, SIGHT
+        SPEED, IMMORTAL, SIGHT, SIZE
     }
 
     /**
