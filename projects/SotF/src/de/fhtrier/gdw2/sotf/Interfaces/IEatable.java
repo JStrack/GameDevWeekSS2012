@@ -9,9 +9,9 @@ import java.util.List;
  * @author Attila Djerdj
  * @author Stefan Probst
  */
+
 public interface IEatable extends IEntity
 {
-
     /**
      * Liefert eine Liste vom Typ IPowerups mit den Powerups die auf den Spieler
      * wirken, wenn er das Item isst.
