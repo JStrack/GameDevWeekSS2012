@@ -3,12 +3,14 @@ package de.fhtrier.gdw2.sotf.menu.pages;
 import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 import de.fhtrier.gdw2.sotf.states.MainMenuState;
 import de.fhtrier.gdw2.sotf.Interfaces.IActionListener;
 import de.fhtrier.gdw2.sotf.menu.MenuPage;
+import de.fhtrier.gdw2.sotf.menu.Slider;
 
 /**
  * Menu page: Options
@@ -31,5 +33,9 @@ public class MenuPageOptions extends MenuPage {
 						close();
 					}
 				});
+		
+		Slider s = Slider.create(1.0f, 200, 200, 200, 30).thumbImage(new Image("res/menu/slider_thumb.png"));
+		
+		addWidget(s);
 	}
 }
