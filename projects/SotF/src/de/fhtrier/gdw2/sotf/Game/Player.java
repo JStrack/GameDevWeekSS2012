@@ -17,7 +17,7 @@ public class Player extends Entity implements IPlayer{
     private ITeam team;
 
 	/**
-	 * Enthält die ID des lokalen Spielers
+	 * Enthï¿½lt die ID des lokalen Spielers
 	 */
 	public static int localPlayerId;
 
@@ -76,7 +76,7 @@ public class Player extends Entity implements IPlayer{
 			controll(gameContainer,time);
 		
 		if (powerups != null) {
-			// Duration der Power-ups anpassen/prüfen
+			// Duration der Power-ups anpassen/prï¿½fen
 			for (int i = 0; i <= this.powerups.size(); i++) {
 				this.powerups.get(i).setDuration(
 						this.powerups.get(i).getDuration() - time);
@@ -85,7 +85,7 @@ public class Player extends Entity implements IPlayer{
 				if (this.powerups.get(i).getDuration() <= 0) {
 					// effekt entfernen
 					// TODO
-					// Powerup aus Liste löschen
+					// Powerup aus Liste lï¿½schen
 					this.powerups.remove(i);
 				}
 			}
@@ -93,7 +93,7 @@ public class Player extends Entity implements IPlayer{
 	}
 	
 	/**
-	 * Liefert zurück, ob der Spieler grade gegessen werden kann oder
+	 * Liefert zurï¿½ck, ob der Spieler grade gegessen werden kann oder
 	 * immortal-Effekt auf den Spieler zutreffen
 	 * 
 	 * @return
@@ -112,17 +112,17 @@ public class Player extends Entity implements IPlayer{
         // Wachsen des Spielers
         this.setRadius(this.getRadius() + eat.getEnergy());
 
-        // Usable zu Inventar hinzufügen
+        // Usable zu Inventar hinzufï¿½gen
         IUseable use = eat.getUseable();
         if (use != null) {
             // TODO
         }
 
-        // Powerups hinzufügen und Effekt anwenden
+        // Powerups hinzufï¿½gen und Effekt anwenden
         List<IPowerups> plist = eat.getPowerups();
         if (plist != null) {
             for (int i = 0; i < plist.size(); i++) {
-                // Powerup zu Liste hinzufügen
+                // Powerup zu Liste hinzufï¿½gen
                 this.powerups.add(plist.get(i));
 
                 // Effekt auf Spieler anwenden
