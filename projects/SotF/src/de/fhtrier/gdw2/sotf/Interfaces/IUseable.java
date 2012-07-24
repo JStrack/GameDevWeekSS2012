@@ -4,7 +4,7 @@ import java.util.List;
 
 
 /**
- * Interface für die benutzbaren Items im Inventar.
+ * Interface fuer die benutzbaren Items im Inventar.
  * 
  * @author Kevin Korte
  * @author Attila Djerdj

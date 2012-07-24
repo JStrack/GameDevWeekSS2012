@@ -1,42 +1,37 @@
-package de.fhtrier.gdw2.sotf;
+package de.fhtrier.gdw.sotf.states;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.newdawn.slick.AngelCodeFont;
-import org.newdawn.slick.AppGameContainer;
-import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.state.BasicGameState;
+import org.newdawn.slick.state.StateBasedGame;
 
 import de.fhtrier.gdw2.sotf.Interfaces.IActionListener;
 import de.fhtrier.gdw2.sotf.menu.Button;
 
-public class SlickTest extends BasicGame {
+public class MainMenuState extends BasicGameState {
+	
+	int stateID = -1;
+	
 	public int mouseX, mouseY;
 	public boolean mouseDown;
 	public List<Button> buttons = new ArrayList<Button>();
-	/** The font to write the message with */
 	private Font font;
-
-	public SlickTest() {
-		super("SlickTest");
+	
+	public MainMenuState(int stateID) {
+		this.stateID = stateID;
 	}
 
 	@Override
-	public void render(GameContainer container, Graphics g)
+	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
-		g.clear();
-		for(Button b: buttons)
-			b.render(g);
-	}
-
-	@Override
-	public void init(GameContainer container) throws SlickException {
 		font = new AngelCodeFont("res/demo2.fnt","res/demo2_00.tga");
 
 		float x = container.getWidth()*0.5f;
@@ -52,12 +47,31 @@ public class SlickTest extends BasicGame {
 	}
 
 	@Override
-	public void update(GameContainer container, int delta)
+	public void render(GameContainer container, StateBasedGame game, Graphics g)
+			throws SlickException {
+		g.clear();
+		for(Button b: buttons)
+			b.render(g);
+	}
+
+	@Override
+	public void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
 		// TODO Auto-generated method stub
 		
+		if (container.getInput().isKeyDown(Input.KEY_1)) {
+			game.enterState(1);
+		}
+		
+	}
+
+	@Override
+	public int getID() {
+		// TODO Auto-generated method stub
+		return stateID;
 	}
 	
+
 	public void addCenteredButton(final String text, float x, float y) {
 		float w = font.getWidth(text);
 		float h = font.getHeight(text);
@@ -93,14 +107,5 @@ public class SlickTest extends BasicGame {
 	
 	public void mousePressed(int button, int x, int y) {
 		mouseDown = true;
-	}
-	
-	public static void main(String[] args) {
-		 try {
-	            AppGameContainer app = new AppGameContainer(new SlickTest());
-	            app.start();
-	        } catch (SlickException e) {
-	            e.printStackTrace();
-	        }		
 	}
 }
