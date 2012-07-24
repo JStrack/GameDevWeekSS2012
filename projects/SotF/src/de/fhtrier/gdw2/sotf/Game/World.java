@@ -7,6 +7,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
 
+import de.fhtrier.gdw2.sotf.AssertLoader.AssetLoader;
 import de.fhtrier.gdw2.sotf.Interfaces.IEatable;
 import de.fhtrier.gdw2.sotf.Interfaces.IEntity;
 import de.fhtrier.gdw2.sotf.Interfaces.IPlayer;
@@ -22,17 +23,21 @@ public class World {
 	private ArrayList<IEatable> eatables;
 	private ArrayList<IUseable> useables;
 	private ArrayList<IEntity> entitys;
+	AssetLoader assetLoader;
 	
 	private TiledMap map;
 	
 	/**
 	 * Erstellt eine neue Welt
+	 * @throws SlickException 
 	 */
-	public World() {
+	public World() throws SlickException {
 		players = new ArrayList<IPlayer>();
 		eatables = new ArrayList<IEatable>();
 		useables = new ArrayList<IUseable>();
 		entitys = new ArrayList<IEntity>();
+		assetLoader= new AssetLoader();
+		map=assetLoader.loadMap(0);
 	}
 	
 	/**

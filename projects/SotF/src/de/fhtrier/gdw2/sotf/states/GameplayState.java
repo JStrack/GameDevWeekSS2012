@@ -7,6 +7,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import de.fhtrier.gdw2.sotf.Game.World;
 
 /**
  * @author Kevin Korte
@@ -19,6 +20,7 @@ public class GameplayState extends BasicGameState
 
     // Default State ID Wert -1;
     int stateID = -1;
+    World world;
 
     /**
      * Konstruktor
@@ -38,7 +40,7 @@ public class GameplayState extends BasicGameState
     public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException
     {
         // TODO Auto-generated method stub
-
+    	world = new World();
     }
 
     @Override
@@ -51,6 +53,7 @@ public class GameplayState extends BasicGameState
     {
         // TODO Auto-generated method stub
         arg2.setBackground(Color.blue);
+        world.render(arg0, arg2);
 
     }
 
