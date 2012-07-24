@@ -35,6 +35,7 @@ public class World {
 	 * enthält alle Entities
 	 */
 	private ArrayList<IEntity> entities;
+	
 	/**
 	 * enthält den AssetLoader
 	 */
@@ -167,5 +168,13 @@ public class World {
 	public void remove(IUseable e) {
 		useables.remove(e);
 		entities.remove(e);
+	}
+
+	/**
+	 * Gibt den AssetLoader der Welt zurück
+	 * @return AssetLoader der Welt
+	 */
+	public AssetLoader getAssetLoader() {
+		return assetLoader;
 	}
 }
