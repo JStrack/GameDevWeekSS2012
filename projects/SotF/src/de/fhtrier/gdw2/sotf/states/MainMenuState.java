@@ -79,6 +79,11 @@ public class MainMenuState extends BasicGameState {
 		if(currentPage != null)
 			currentPage.mouseMoved(oldx, oldy, newx, newy);
 	}
+	
+	public void mouseDragged(int oldx, int oldy, int newx, int newy) {
+		if(currentPage != null)
+			currentPage.mouseDragged(oldx, oldy, newx, newy);
+	}
 
 	public void mouseReleased(int button, int x, int y) {
 		if(currentPage != null)

@@ -15,6 +15,9 @@ public abstract class Widget {
 	
 	public void mouseMoved(int oldx, int oldy, int newx, int newy) {
 	}
+	
+	public void mouseDragged(int oldx, int oldy, int newx, int newy) {
+	}
 
 	public void mouseReleased(int button, int x, int y) {
 	}

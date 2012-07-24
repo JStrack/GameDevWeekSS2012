@@ -96,6 +96,12 @@ public class MenuPage {
 			w.mouseMoved(oldx, oldy, newx, newy);
 		}
 	}
+	
+	public void mouseDragged(int oldx, int oldy, int newx, int newy) {
+		for(Widget w: widgets) {
+			w.mouseDragged(oldx, oldy, newx, newy);
+		}
+	}
 
 	public void mouseReleased(int button, int x, int y) {
 		for(Widget w: widgets) {
