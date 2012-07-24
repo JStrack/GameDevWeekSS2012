@@ -1,20 +1,20 @@
-package Classes;
+package de.fhtrier.gdw2.sotf.Game;
 
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 
+import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.geom.Circle;
 
 import de.fhtrier.gdw2.sotf.Interfaces.*;
-
 
 public class Entity implements IEntity {
 	
 	private Vector2f position;
 	private float radius;
 	private int id;
-	private Image image;
+	private Image image;	
 	// unsichtbares Polyon für Kollisionerkennung
 	private Circle shape;
 	
@@ -30,12 +30,6 @@ public class Entity implements IEntity {
 		this.shape = new Circle(this.position.getX(),this.position.getY(),this.radius);
 	}
 	
-
-	@Override
-	public Vector2f getPosition() {
-		return this.position;
-	}
-	
 	public void setPosition(Vector2f pos) {
 		this.position = pos;
 		this.shape.setLocation(pos);
@@ -45,12 +39,10 @@ public class Entity implements IEntity {
 		this.position.set(x, y);
 		this.shape.setLocation(x, y);
 	}
-
 	
 	@Override
-	public void update(int time) {	
+	public void update(GameContainer gameContainer, int time) {
 	}
-
 	@Override
 	public float getRadius() {
 		return this.radius;
@@ -60,18 +52,27 @@ public class Entity implements IEntity {
 		this.radius = r;
 		this.shape.setRadius(this.radius);
 	}
-	
 
-	@Override
-	public int getID() {
-		return this.id;
-	}
+
+    @Override
+    public Vector2f getPosition()
+    {
+        return this.position;
+    }
+
+
+    @Override
+    public int getID()
+    {
+        return this.id;
+    }
 
 	@Override
 	public void render(Graphics g) {
+		System.out.println("Radius: "+this.radius);
 		g.drawImage(this.image,
-				this.position.getX()-this.radius,this.position.getX()-this.radius,
-				this.radius*2,this.radius*2,
+				this.position.getX()-this.radius,this.position.getY()-this.radius,
+				this.position.getX()+this.radius*2,this.position.getY()+this.radius*2,
 				0,0,
 				this.image.getHeight(),this.image.getWidth());
 	}
