@@ -1,5 +1,7 @@
 package de.fhtrier.gdw2.sotf.Interfaces;
-
+/**
+ * @author Wendelin Lehr
+ */
 import java.util.List;
 
 public interface IWorld
