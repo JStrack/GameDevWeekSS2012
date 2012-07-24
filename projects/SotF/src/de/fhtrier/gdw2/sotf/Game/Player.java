@@ -15,9 +15,9 @@ public class Player extends Entity implements IPlayer{
     private IUseable[] inventory;
     private List<IPowerups> powerups;
     private ITeam team;
-
-	/**
-	 * Enthï¿½lt die ID des lokalen Spielers
+	
+    /**
+	 * Enthält die ID des lokalen Spielers
 	 */
 	public static int localPlayerId;
 
@@ -31,7 +31,7 @@ public class Player extends Entity implements IPlayer{
     public void setVelocity(Vector2f velo) {
         this.velocity = velo;
     }
-
+    
 	@Override
 	public Vector2f getVelocity() {
 		return this.velocity;
@@ -76,7 +76,7 @@ public class Player extends Entity implements IPlayer{
 			controll(gameContainer,time);
 		
 		if (powerups != null) {
-			// Duration der Power-ups anpassen/prï¿½fen
+			// Duration der Power-ups anpassen/prüfen
 			for (int i = 0; i <= this.powerups.size(); i++) {
 				this.powerups.get(i).setDuration(
 						this.powerups.get(i).getDuration() - time);
@@ -85,7 +85,8 @@ public class Player extends Entity implements IPlayer{
 				if (this.powerups.get(i).getDuration() <= 0) {
 					// effekt entfernen
 					// TODO
-					// Powerup aus Liste lï¿½schen
+
+					// Powerup aus Liste löschen
 					this.powerups.remove(i);
 				}
 			}
@@ -93,7 +94,7 @@ public class Player extends Entity implements IPlayer{
 	}
 	
 	/**
-	 * Liefert zurï¿½ck, ob der Spieler grade gegessen werden kann oder
+	 * Liefert zurück, ob der Spieler grade gegessen werden kann oder
 	 * immortal-Effekt auf den Spieler zutreffen
 	 * 
 	 * @return
@@ -173,7 +174,6 @@ public class Player extends Entity implements IPlayer{
         // TODO Auto-generated method stub
         return null;
     }
-
 	@Override
 	public float getEnergy() {
 		// TODO Auto-generated method stub
@@ -182,6 +182,8 @@ public class Player extends Entity implements IPlayer{
 	
 	public boolean isLocalPlayer() {
 		return this.getID()==this.localPlayerId;
+
 	}
 
 }
+
