@@ -2,32 +2,22 @@ package de.fhtrier.gdw2.sotf.Game;
 
 import java.util.List;
 
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Vector2f;
 
 import de.fhtrier.gdw2.sotf.Interfaces.*;
 
-public class Player extends Entity implements IPlayer
-{
+public class Player extends Entity implements IPlayer{
+	
+	private Vector2f velocity;
+	private IUseable[] inventory;
+	private List<IPowerups> powerups;
+	private ITeam team;
 
-    private Vector2f velocity;
-
-    private IUseable[] inventory;
-
-    private List<IPowerups> powerups;
-
-    private ITeam team;
-
-    public Player(Vector2f position, float radius, int id, Image image)
-    {
-        super(position, radius, id, image);
-    }
-
-    @Override
-    public void setVelocity(Vector2f velo)
-    {
-        this.velocity = velo;
-    }
+	public Player(Vector2f position, float radius, int id, Image image) {
+		super(position, radius, id, image);
+	}
 
     @Override
     public Vector2f getVelocity()
