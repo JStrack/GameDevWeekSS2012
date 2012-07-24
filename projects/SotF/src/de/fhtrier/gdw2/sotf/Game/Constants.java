@@ -12,4 +12,5 @@ public class Constants
      * Sekunde bewegt werden kann
      */
     public static float PLAYER_MOVEMENT_SPEED = 600f;
+    public static int MIN_SIZE = 24;
 }
