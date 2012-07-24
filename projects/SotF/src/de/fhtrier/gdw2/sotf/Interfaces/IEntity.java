@@ -1,7 +1,6 @@
 package de.fhtrier.gdw2.sotf.Interfaces;
 
 import org.newdawn.slick.geom.Vector2f;
-import java.awt.Graphics;
 import org.newdawn.slick.*;
 
 public interface IEntity {
