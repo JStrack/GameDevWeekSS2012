@@ -58,7 +58,7 @@ public class World {
 		eatables = new ArrayList<IEatable>();
 		useables = new ArrayList<IUseable>();
 		assetLoader = new AssetLoader();
-		//map=assetLoader.loadMap(0);
+		map=assetLoader.loadMap(0);
 	}
 	
 	/**
@@ -68,7 +68,7 @@ public class World {
 	 */
 	public void render(GameContainer gc, Graphics g)
 			throws SlickException {
-		//map.render(0, 0);
+		map.render(0, 0);
 		
 		for (IEntity e : entities) {
 			e.render(g);
