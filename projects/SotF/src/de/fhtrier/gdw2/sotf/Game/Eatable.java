@@ -11,10 +11,12 @@ import de.fhtrier.gdw2.sotf.Interfaces.IUseable;
 
 /**
  * Ein Eatable
+ * 
  * @author Kevin Korte
- *
+ * 
  */
-public class Eatable extends Entity implements IEatable {
+public class Eatable extends Entity implements IEatable
+{
 
 	private float energy;
 	private List<IPowerups> powerupsList;
@@ -39,33 +41,36 @@ public class Eatable extends Entity implements IEatable {
 		this.useable = useable;
 	}
 
-	/**
-	 * gibt die Liste der, im Eatable beinhaltenden, Powerups,
-	 * die der Spieler erhält, zurück
-	 * 
-	 * @return List<IPowerups>
-	 */
-	public List<IPowerups> getPowerups() {
-		return powerupsList;
-	}
+    /**
+     * gibt die Liste der, im Eatable beinhaltenden, Powerups, die der Spieler
+     * erhält, zurück
+     * 
+     * @return List<IPowerups>
+     */
+    public List<IPowerups> getPowerups()
+    {
+        return powerupsList;
+    }
 
-	/**
-	 * gibt das Useable zurück, welches der Spieler erhält,
-	 * wenn dieser das Eatable isst
-	 * 
-	 * @return IUseable
-	 */
-	public IUseable getUseable() {
-		return useable;
-	}
+    /**
+     * gibt das Useable zurück, welches der Spieler erhält, wenn dieser das
+     * Eatable isst
+     * 
+     * @return IUseable
+     */
+    public IUseable getUseable()
+    {
+        return useable;
+    }
 
-	/**
-	 * gibt die Energie zurück, die der Spieler bekommt,
-	 * falls dieser das Eatable isst
-	 * 
-	 * @return float
-	 */
-	public float getEnergy() {
-		return energy;
-	}
+    /**
+     * gibt die Energie zurück, die der Spieler bekommt, falls dieser das
+     * Eatable isst
+     * 
+     * @return float
+     */
+    public float getEnergy()
+    {
+        return energy;
+    }
 }

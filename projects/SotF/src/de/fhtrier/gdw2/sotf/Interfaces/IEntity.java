@@ -1,9 +1,8 @@
 package de.fhtrier.gdw2.sotf.Interfaces;
 
-import org.newdawn.slick.geom.Vector2f;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Circle;
+import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.*;
 
 public interface IEntity {
 	

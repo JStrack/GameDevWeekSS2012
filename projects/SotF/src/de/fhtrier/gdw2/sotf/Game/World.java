@@ -14,7 +14,9 @@ import de.fhtrier.gdw2.sotf.Interfaces.IPlayer;
 import de.fhtrier.gdw2.sotf.Interfaces.IUseable;
 
 /**
- * World zeichnet die Welt und verwaltet auch die Entitys, World ist also der Gamecontainer
+ * World zeichnet die Welt und verwaltet auch die Entitys, World ist also der
+ * Gamecontainer
+ * 
  * @author Robin Dick
  */
 public class World {
@@ -72,7 +74,7 @@ public class World {
 			e.render(g);
 		}
 	}
-
+	
 	/**
 	 * Aktualisiert die Map und alle Entitys in ihr
 	 * @param gc GameContainer der von Slick vorgegeben wird

@@ -17,17 +17,19 @@ import de.fhtrier.gdw2.sotf.Game.World;
  * @author Kevin Korte
  * @author Attila Djerdj
  * @author Stefan Probst
- *
+ * 
  */
 public class GameplayState extends BasicGameState
 {
 
     // Default State ID Wert -1;
     int stateID = -1;
+
     World world;
 
     /**
      * Konstruktor
+     * 
      * @param stateID
      */
     public GameplayState(int stateID)
@@ -37,13 +39,13 @@ public class GameplayState extends BasicGameState
 
     /**
      * Initialisierung
+     * 
      * @param GameContainer
      * @param StateBasedGame
      */
     @Override
     public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException
     {
-        // TODO Auto-generated method stub
     	world = new World();
     	//by Robin:
     	//Player p = new Player(new Vector2f(32,32), 32, 1, new Image("Kreis.png")); // TODO: delete
