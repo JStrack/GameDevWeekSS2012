@@ -1,13 +1,27 @@
 package de.fhtrier.gdw2.sotf;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
+import de.fhtrier.gdw2.sotf.Interfaces.IActionListener;
+import de.fhtrier.gdw2.sotf.menu.Button;
+
 public class SlickTest extends BasicGame {
+	public int mouseX, mouseY;
+	public boolean mouseDown;
+	public List<Button> buttons = new ArrayList<Button>();
+	/** The font to write the message with */
+	private Font font;
 
 	public SlickTest() {
 		super("SlickTest");
@@ -16,14 +30,25 @@ public class SlickTest extends BasicGame {
 	@Override
 	public void render(GameContainer container, Graphics g)
 			throws SlickException {
-		g.setBackground(Color.green);
 		g.clear();
+		for(Button b: buttons)
+			b.render(g);
 	}
 
 	@Override
 	public void init(GameContainer container) throws SlickException {
-		// TODO Auto-generated method stub
-		
+		font = new AngelCodeFont("res/demo2.fnt","res/demo2_00.tga");
+
+		float x = container.getWidth()*0.5f;
+		float y = container.getHeight()*0.5f;
+		float h = font.getLineHeight() * 1.2f;
+		addCenteredButton("Create a Game", x, y - h * 2);
+		addCenteredButton("Join a Game", x, y - h * 1);
+		addCenteredButton("Options", x, y);
+		addCenteredButton("Help", x, y + h * 1);
+		addCenteredButton("Exit", x, y + h * 2);
+		for(Button b: buttons)
+			b.init(container, this);
 	}
 
 	@Override
@@ -31,6 +56,43 @@ public class SlickTest extends BasicGame {
 			throws SlickException {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void addCenteredButton(final String text, float x, float y) {
+		float w = font.getWidth(text);
+		float h = font.getHeight(text);
+
+		Button button = Button.create(text, x - w/2, y - h/2, w, h)
+			.font(font)
+			.color(Color.gray)
+			.hoverColor(Color.white)
+			.pressedColor(Color.red)
+			.action(
+				new IActionListener() {
+					public void onAction() {
+						System.out.println("Button '" + text + "' pressed");
+					}
+				}
+			);
+		buttons.add(button);
+	}
+
+	public void keyReleased(int key, char c) {
+		if (key == Input.KEY_ESCAPE) {
+		}
+	}
+	
+	public void mouseMoved(int oldx, int oldy, int newx, int newy) {
+		mouseX = newx;
+		mouseY = newy;
+	}
+
+	public void mouseReleased(int button, int x, int y) {
+		mouseDown = false;
+	}
+	
+	public void mousePressed(int button, int x, int y) {
+		mouseDown = true;
 	}
 	
 	public static void main(String[] args) {
@@ -41,5 +103,4 @@ public class SlickTest extends BasicGame {
 	            e.printStackTrace();
 	        }		
 	}
-
 }
