@@ -4,6 +4,7 @@ import org.newdawn.slick.Graphics;
 
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.geom.Circle;
 
 import de.fhtrier.gdw2.sotf.Interfaces.*;
 
@@ -14,6 +15,8 @@ public class Entity implements IEntity {
 	private float radius;
 	private int id;
 	private Image image;
+	// unsichtbares Polyon für Kollisionerkennung
+	private Circle shape;
 	
 	
 	public Entity(Vector2f position, float radius, int id, Image image)
@@ -22,6 +25,9 @@ public class Entity implements IEntity {
 		this.radius = radius;
 		this.id = id;
 		this.image = image;
+		
+		// Shape zur Kollisionserkennung erzeugen
+		this.shape = new Circle(this.position.getX(),this.position.getY(),this.radius);
 	}
 	
 
@@ -29,18 +35,32 @@ public class Entity implements IEntity {
 	public Vector2f getPosition() {
 		return this.position;
 	}
+	
+	public void setPosition(Vector2f pos) {
+		this.position = pos;
+		this.shape.setLocation(pos);
+	}
+	
+	public void setPosition(float x, float y) {
+		this.position.set(x, y);
+		this.shape.setLocation(x, y);
+	}
 
 	
 	@Override
-	public void update(int time) {
-		// TODO Auto-generated method stub
-		
+	public void update(int time) {	
 	}
 
 	@Override
 	public float getRadius() {
 		return this.radius;
 	}
+	
+	public void setRadius(float r) {
+		this.radius = r;
+		this.shape.setRadius(this.radius);
+	}
+	
 
 	@Override
 	public int getID() {
@@ -54,6 +74,12 @@ public class Entity implements IEntity {
 				this.radius*2,this.radius*2,
 				0,0,
 				this.image.getHeight(),this.image.getWidth());
+	}
+
+
+	@Override
+	public Circle getShape() {
+		return this.shape;
 	}
 
 }
