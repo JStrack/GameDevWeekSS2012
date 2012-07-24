@@ -8,6 +8,12 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+/**
+ * @author Kevin Korte
+ * @author Attila Djerdj
+ * @author Stefan Probst
+ *
+ */
 public class GameplayState extends BasicGameState
 {
 

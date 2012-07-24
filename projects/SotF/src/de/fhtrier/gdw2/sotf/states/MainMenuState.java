@@ -8,6 +8,13 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+/**
+ * @author Kevin Korte
+ * @author Attila Djerdj
+ * @author Stefan Probst
+ *
+ */
+
 public class MainMenuState extends BasicGameState
 {
 
@@ -19,6 +26,10 @@ public class MainMenuState extends BasicGameState
     }
 
     @Override
+    /**
+     * @param GameContainer
+     * @param StateBasedGame
+     */
     public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException
     {
         // TODO Auto-generated method stub
@@ -26,6 +37,11 @@ public class MainMenuState extends BasicGameState
     }
 
     @Override
+    /**
+     * @param GameContainer
+     * @param StateBasedGame
+     * @param Graphics
+     */
     public void render(GameContainer arg0, StateBasedGame arg1, Graphics arg2) throws SlickException
     {
         // TODO Auto-generated method stub
@@ -33,6 +49,11 @@ public class MainMenuState extends BasicGameState
     }
 
     @Override
+    /**
+     * @param GameContainer
+     * @param StateBasedGame
+     * @param int
+     */
     public void update(GameContainer arg0, StateBasedGame arg1, int arg2) throws SlickException
     {
         // TODO Auto-generated method stub
@@ -45,6 +66,9 @@ public class MainMenuState extends BasicGameState
     }
 
     @Override
+    /**
+     * @return stateID
+     */
     public int getID()
     {
         // TODO Auto-generated method stub
