@@ -63,6 +63,7 @@ public class GameplayState extends BasicGameState
     /**
      * @param GameContainer
      * @param StateBasedGame
+     * @param int
      */
     public void update(GameContainer arg0, StateBasedGame arg1, int arg2) throws SlickException
     {
@@ -76,6 +77,9 @@ public class GameplayState extends BasicGameState
     }
 
     @Override
+    /**
+     * @return state ID
+     */
     public int getID()
     {
         // TODO Auto-generated method stub
