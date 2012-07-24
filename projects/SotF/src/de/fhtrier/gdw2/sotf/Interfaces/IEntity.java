@@ -1,6 +1,7 @@
 package de.fhtrier.gdw2.sotf.Interfaces;
 
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.*;
 
 public interface IEntity
@@ -32,5 +33,4 @@ public interface IEntity
      *            the graphics context the entity has to be drawn in
      */
     public void render(Graphics g);
-
 }
