@@ -73,6 +73,8 @@ public class World {
 		for (IEntity e : entities) {
 			e.render(g);
 		}
+		assetLoader.getTopAnimation(null).draw(200,200);
+		assetLoader.getSideAnimation(null).draw(400,200);
 	}
 	
 	/**
