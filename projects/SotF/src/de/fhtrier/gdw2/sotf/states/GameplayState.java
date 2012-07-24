@@ -9,7 +9,9 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.EmptyTransition;
 
+import de.fhtrier.gdw2.sotf.SlickTestGameState;
 import de.fhtrier.gdw2.sotf.Game.Player;
 import de.fhtrier.gdw2.sotf.Game.World;
 
@@ -25,6 +27,8 @@ public class GameplayState extends BasicGameState
     // Default State ID Wert -1;
     int stateID = -1;
 
+	GameContainer container;
+	StateBasedGame game;
     World world;
 
     /**
@@ -44,9 +48,12 @@ public class GameplayState extends BasicGameState
      * @param StateBasedGame
      */
     @Override
-    public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException
+    public void init(GameContainer container, StateBasedGame game) throws SlickException
     {
-    	world = new World();
+		this.container = container;
+		this.game = game;
+		
+    	//world = new World();
     	//by Robin:
     	//Player p = new Player(new Vector2f(32,32), 32, 1, new Image("Kreis.png")); // TODO: delete
     	//world.add(p);
@@ -58,11 +65,10 @@ public class GameplayState extends BasicGameState
      * @param StatedBasedGame
      * @param Graphics
      */
-    public void render(GameContainer arg0, StateBasedGame arg1, Graphics arg2) throws SlickException
-    {
-        // TODO Auto-generated method stub
-        arg2.setBackground(Color.blue);
-        world.render(arg0, arg2);
+	public void render(GameContainer container, StateBasedGame game, Graphics g)
+			throws SlickException {
+		g.setBackground(Color.darkGray);
+        //world.render(container, g);
 
     }
 
@@ -72,15 +78,9 @@ public class GameplayState extends BasicGameState
      * @param StateBasedGame
      * @param int
      */
-    public void update(GameContainer gc, StateBasedGame arg1, int delta) throws SlickException
+    public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException
     {
-        world.update(gc, delta);
-
-        if (gc.getInput().isKeyDown(Input.KEY_2))
-        {
-            arg1.enterState(0);
-        }
-
+        //world.update(gc, delta);
     }
 
     @Override
@@ -92,5 +92,10 @@ public class GameplayState extends BasicGameState
         // TODO Auto-generated method stub
         return stateID;
     }
+
+	public void keyReleased(int key, char c) {
+		if(key == Input.KEY_ESCAPE)
+			game.enterState(SlickTestGameState.MAINMENUSTATE, new EmptyTransition(), new EmptyTransition());
+	}
 
 }
