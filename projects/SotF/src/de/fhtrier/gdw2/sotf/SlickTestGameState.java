@@ -25,6 +25,7 @@ public class SlickTestGameState extends StateBasedGame
         try
         {
             AppGameContainer app = new AppGameContainer(new SlickTestGameState());
+            app.setDisplayMode(1024, 768, false);
             app.start();
         }
         catch (SlickException e)
