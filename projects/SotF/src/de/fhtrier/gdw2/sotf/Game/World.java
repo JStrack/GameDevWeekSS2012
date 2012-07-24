@@ -51,10 +51,11 @@ public class World {
 	 * @throws SlickException 
 	 */
 	public World() throws SlickException {
+		entities = new ArrayList<IEntity>();
 		players = new ArrayList<IPlayer>();
 		eatables = new ArrayList<IEatable>();
 		useables = new ArrayList<IUseable>();
-		assetLoader= new AssetLoader();
+		assetLoader = new AssetLoader();
 		map=assetLoader.loadMap(0);
 	}
 	
