@@ -42,8 +42,8 @@ public class MainMenuState extends BasicGameState {
         addCenteredButton("Options", x, y);
         addCenteredButton("Help", x, y + h * 1);
         addCenteredButton("Exit", x, y + h * 2);
-        for(Button b: buttons)
-            b.init(container, this);
+       /* for(Button b: buttons)
+            b.init(container, this);*/
     }
 
     @Override
