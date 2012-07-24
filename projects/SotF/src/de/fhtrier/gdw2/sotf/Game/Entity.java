@@ -68,9 +68,10 @@ public class Entity implements IEntity {
 
 	@Override
 	public void render(Graphics g) {
+		System.out.println("Radius: "+this.radius);
 		g.drawImage(this.image,
-				this.position.getX()-this.radius,this.position.getX()-this.radius,
-				this.radius*2,this.radius*2,
+				this.position.getX()-this.radius,this.position.getY()-this.radius,
+				this.position.getX()+this.radius*2,this.position.getY()+this.radius*2,
 				0,0,
 				this.image.getHeight(),this.image.getWidth());
 	}

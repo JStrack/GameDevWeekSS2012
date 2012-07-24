@@ -41,7 +41,7 @@ public class Player extends Entity implements IPlayer{
 		float changeX = 0f;
 		float changeY = 0f;
 		
-		float deltaMovement = Constants.PLAYER_MOVEMENT_SPEED / ((float) delta);
+		float deltaMovement = Constants.PLAYER_MOVEMENT_SPEED / (1000f * delta);
 		
 		if (gc.getInput().isKeyDown(Input.KEY_W)) {
 			changeY -= deltaMovement; 
@@ -60,6 +60,8 @@ public class Player extends Entity implements IPlayer{
 		float x = this.getPosition().getX() + changeX;
 		float y = this.getPosition().getY() + changeY;
 		
+		//System.out.println("X: "+this.getPosition().getX()+" | Y: "+this.getPosition().getY());
+		
 		this.setPosition(x, y);
 	}
 	
@@ -68,17 +70,19 @@ public class Player extends Entity implements IPlayer{
 		// Steuerung
 		controll(gameContainer,time);
 		
-		// Duration der Power-ups anpassen/prüfen
-		for (int i = 0; i <= this.powerups.size(); i++) {
-			this.powerups.get(i).setDuration(
-					this.powerups.get(i).getDuration() - time);
-
-			// abgelaufene Powerups entfernen
-			if (this.powerups.get(i).getDuration() <= 0) {
-				// effekt entfernen
-				// TODO
-				// Powerup aus Liste löschen
-				this.powerups.remove(i);
+		if (powerups != null) {
+			// Duration der Power-ups anpassen/prüfen
+			for (int i = 0; i <= this.powerups.size(); i++) {
+				this.powerups.get(i).setDuration(
+						this.powerups.get(i).getDuration() - time);
+	
+				// abgelaufene Powerups entfernen
+				if (this.powerups.get(i).getDuration() <= 0) {
+					// effekt entfernen
+					// TODO
+					// Powerup aus Liste löschen
+					this.powerups.remove(i);
+				}
 			}
 		}
 	}
