@@ -1,6 +1,7 @@
-package de.fhtrier.gdw2.sotf;
+package de.fhtrier.gdw2.sotf.Interfaces;
 
 import java.util.List;
+
 
 public interface ITeam {
  
