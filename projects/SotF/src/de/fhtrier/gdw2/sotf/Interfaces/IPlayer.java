@@ -56,5 +56,11 @@ public interface IPlayer extends IEntity {
 	 * @return whether the player is alive or dead
 	 */
 	public abstract boolean isDead();
+	
+	
+	/**
+	 * @return whether the player is eatable
+	 */
+	public abstract boolean isEatable();
 
 }
