@@ -10,7 +10,7 @@ import java.util.List;
  * @author Attila Djerdj
  * @author Stefan Probst
  */
-public interface IEatable {
+public interface IEatable extends IEntity {
 
 	/**
 	 * Liefert eine Liste vom Typ IPowerups
