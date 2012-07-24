@@ -1,4 +1,4 @@
-package de.fhtrier.gdw2.sotf.Game;
+package de.fhtrier.gdw2.sotf.Collision;
 
 import java.util.ArrayList;
 
