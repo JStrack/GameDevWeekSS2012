@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.geom.Circle;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Vector2f;
 
 import de.fhtrier.gdw2.sotf.Interfaces.*;
@@ -30,8 +30,44 @@ public class Player extends Entity implements IPlayer{
 		return this.velocity;
 	}
 	
+	/**
+	 * Steuerung des Spielers
+	 * @author Robin Dick
+	 * @param gc Der Slick-GameContainer
+	 * @param delta Millisekunden seit dem letzten Update-Schritt
+	 */
+	private void controll(GameContainer gc, int delta) {
+		// TODO: Feststellen, ob der Player wirklich der lokale Spieler ist!
+		float changeX = 0f;
+		float changeY = 0f;
+		
+		float deltaMovement = Constants.PLAYER_MOVEMENT_SPEED / ((float) delta);
+		
+		if (gc.getInput().isKeyDown(Input.KEY_W)) {
+			changeY -= deltaMovement; 
+		}
+		if (gc.getInput().isKeyDown(Input.KEY_S)) {
+			changeY += deltaMovement; 
+		}
+		if (gc.getInput().isKeyDown(Input.KEY_A)) {
+			changeX -= deltaMovement; 
+		}
+		if (gc.getInput().isKeyDown(Input.KEY_D)) {
+			changeX += deltaMovement; 
+		}
+		
+		// TODO: Levelgrenzen einhalten!
+		float x = this.getPosition().getX() + changeX;
+		float y = this.getPosition().getY() + changeY;
+		
+		this.setPosition(x, y);
+	}
+	
 	@Override
 	public void update(GameContainer gameContainer, int time) {
+		// Steuerung
+		controll(gameContainer,time);
+		
 		// Duration der Power-ups anpassen/prüfen
 		for (int i = 0; i <= this.powerups.size(); i++) {
 			this.powerups.get(i).setDuration(
@@ -45,7 +81,6 @@ public class Player extends Entity implements IPlayer{
 				this.powerups.remove(i);
 			}
 		}
-
 	}
 	
 	/**
