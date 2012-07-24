@@ -15,11 +15,16 @@ public class Player extends Entity implements IPlayer{
 	private IUseable[] inventory;
 	private List<IPowerups> powerups;
 	private ITeam team;
-	private boolean isLocalPlayer;
 
-	public Player(Vector2f position, float radius, int id, boolean isLocalPlayer, Image image) {
-		super(position, radius, id, image);
-		this.isLocalPlayer = isLocalPlayer;
+	/**
+	 * Enthält die ID des lokalen Spielers
+	 */
+	public static int localPlayerId;
+
+	public Player(Vector2f position, float radius, boolean isLocalPlayer, Image image) {
+		super(position, radius, image);
+		if (isLocalPlayer)
+			localPlayerId = this.getID();
 	}
 
 	@Override
@@ -67,7 +72,7 @@ public class Player extends Entity implements IPlayer{
 	@Override
 	public void update(GameContainer gameContainer, int time) {
 		// Steuerung
-		if (isLocalPlayer)
+		if (isLocalPlayer())
 			controll(gameContainer,time);
 		
 		if (powerups != null) {
@@ -174,15 +179,9 @@ public class Player extends Entity implements IPlayer{
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
-	@Override
+	
 	public boolean isLocalPlayer() {
-		return isLocalPlayer;
-	}
-
-	@Override
-	public void setIsLocalPlayer(boolean isLocalPlayer) {
-		this.isLocalPlayer = isLocalPlayer;
+		return this.getID()==this.localPlayerId;
 	}
 
 }

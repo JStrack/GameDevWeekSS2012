@@ -18,13 +18,13 @@ public class Entity implements IEntity {
 	private Image image;	
 	// unsichtbares Polyon für Kollisionerkennung
 	private Circle shape;
+	private static int eid = 0;
 	
-	
-	public Entity(Vector2f position, float radius, int id, Image image)
+	public Entity(Vector2f position, float radius, Image image)
 	{
 		this.position = position;
 		this.radius = radius;
-		this.id = id;
+		this.id = eid++;
 		this.image = image;
 		
 		// Shape zur Kollisionserkennung erzeugen
@@ -68,7 +68,6 @@ public class Entity implements IEntity {
 
 	@Override
 	public void render(Graphics g) {
-		System.out.println("Radius: "+this.radius);
 		g.drawImage(this.image,
 				this.position.getX()-this.radius,this.position.getY()-this.radius,
 				this.position.getX()+this.radius*2,this.position.getY()+this.radius*2,

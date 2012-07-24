@@ -31,9 +31,9 @@ public class Eatable extends Entity implements IEatable {
 	 * @param powerupsList
 	 * @param useable
 	 */
-	public Eatable(Vector2f position, float radius, int id, Image image,
+	public Eatable(Vector2f position, float radius, Image image,
 				float energy, List<IPowerups> powerupsList, IUseable useable) {
-		super(position, radius, id, image);
+		super(position, radius, image);
 		this.energy = energy;
 		this.powerupsList = powerupsList;
 		this.useable = useable;
