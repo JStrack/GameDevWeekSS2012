@@ -53,13 +53,11 @@ public class Entity implements IEntity {
 		this.shape.setRadius(this.radius);
 	}
 
-
     @Override
     public Vector2f getPosition()
     {
         return this.position;
     }
-
 
     @Override
     public int getID()
@@ -76,10 +74,10 @@ public class Entity implements IEntity {
 				this.image.getHeight(),this.image.getWidth());
 	}
 
-
-	@Override
-	public Circle getShape() {
-		return this.shape;
-	}
+    @Override
+    public Circle getShape()
+    {
+        return this.shape;
+    }
 
 }

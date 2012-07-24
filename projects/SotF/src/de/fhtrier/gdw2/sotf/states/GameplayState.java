@@ -46,10 +46,11 @@ public class GameplayState extends BasicGameState
     @Override
     public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException
     {
-    	world = new World();
-    	//by Robin:
-    	//Player p = new Player(new Vector2f(32,32), 32, 1, new Image("Kreis.png")); // TODO: delete
-    	//world.add(p);
+        world = new World();
+        // by Robin:
+        // Player p = new Player(new Vector2f(32,32), 32, 1, new
+        // Image("Kreis.png")); // TODO: delete
+        // world.add(p);
     }
 
     @Override
