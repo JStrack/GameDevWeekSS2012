@@ -19,12 +19,31 @@ import de.fhtrier.gdw2.sotf.Interfaces.IUseable;
  */
 public class World {
 	
+	/**
+	 * enthält alle Spieler in der Welt
+	 */
 	private ArrayList<IPlayer> players;
+	/**
+	 * enthält alle essbaren Items in der Welt
+	 */
 	private ArrayList<IEatable> eatables;
+	/**
+	 * enthält alle benutzbaren Items in der Welt
+	 */
 	private ArrayList<IUseable> useables;
-	private ArrayList<IEntity> entitys;
-	AssetLoader assetLoader;
+	/**
+	 * enthält alle Entities
+	 */
+	private ArrayList<IEntity> entities;
 	
+	/**
+	 * enthält den AssetLoader
+	 */
+	private AssetLoader assetLoader;
+	
+	/**
+	 * enthält die darzustellende TiledMap
+	 */
 	private TiledMap map;
 	
 	/**
@@ -32,11 +51,11 @@ public class World {
 	 * @throws SlickException 
 	 */
 	public World() throws SlickException {
+		entities = new ArrayList<IEntity>();
 		players = new ArrayList<IPlayer>();
 		eatables = new ArrayList<IEatable>();
 		useables = new ArrayList<IUseable>();
-		entitys = new ArrayList<IEntity>();
-		assetLoader= new AssetLoader();
+		assetLoader = new AssetLoader();
 		map=assetLoader.loadMap(0);
 	}
 	
@@ -49,7 +68,7 @@ public class World {
 			throws SlickException {
 		map.render(0, 0);
 		
-		for (IEntity e : entitys) {
+		for (IEntity e : entities) {
 			e.render(g);
 		}
 	}
@@ -61,9 +80,41 @@ public class World {
 	 */
 	public void update(GameContainer gc, int delta)
 			throws SlickException {
-		for (IEntity e : entitys) {
+		for (IEntity e : entities) {
 			e.update(gc, delta);
 		}
+	}
+	
+	/**
+	 * Gibt die Spieler in der Welt zurück
+	 * @return IPlayer in der Welt
+	 */
+	public ArrayList<IPlayer> getPlayer() {
+		return players;
+	}
+	
+	/**
+	 * Gibt die Eatables in der Welt zurück
+	 * @return IEatables in der Welt
+	 */
+	public ArrayList<IEatable> getEatables() {
+		return eatables;
+	}
+	
+	/**
+	 * Gibt die Useables in der Welt zurück
+	 * @return IUseables in der Welt
+	 */
+	public ArrayList<IUseable> getUseables() {
+		return useables;
+	}
+	
+	/**
+	 * Gibt alle IEntities aus der Welt zurück
+	 * @return alle IEntities aus der Welt
+	 */
+	public ArrayList<IEntity> getEntities() {
+		return entities;
 	}
 	
 	/**
@@ -72,7 +123,7 @@ public class World {
 	 */
 	public void add(IPlayer e) {
 		players.add(e);
-		entitys.add(e);
+		entities.add(e);
 	}
 	
 	/**
@@ -81,7 +132,7 @@ public class World {
 	 */
 	public void remove(IPlayer e) {
 		players.remove(e);
-		entitys.remove(e);
+		entities.remove(e);
 	}
 	
 	/**
@@ -90,7 +141,7 @@ public class World {
 	 */
 	public void add(IEatable e) {
 		eatables.add(e);
-		entitys.add(e);
+		entities.add(e);
 	}
 	
 	/**
@@ -99,7 +150,7 @@ public class World {
 	 */
 	public void remove(IEatable e) {
 		eatables.remove(e);
-		entitys.remove(e);
+		entities.remove(e);
 	}
 	
 	/**
@@ -108,7 +159,7 @@ public class World {
 	 */
 	public void add(IUseable e) {
 		useables.add(e);
-		entitys.add(e);
+		entities.add(e);
 	}
 	
 	/**
@@ -117,6 +168,14 @@ public class World {
 	 */
 	public void remove(IUseable e) {
 		useables.remove(e);
-		entitys.remove(e);
+		entities.remove(e);
+	}
+
+	/**
+	 * Gibt den AssetLoader der Welt zurück
+	 * @return AssetLoader der Welt
+	 */
+	public AssetLoader getAssetLoader() {
+		return assetLoader;
 	}
 }
