@@ -6,6 +6,9 @@ import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
+import org.newdawn.slick.KeyListener;
+import org.newdawn.slick.MouseListener;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 
@@ -18,9 +21,7 @@ import de.fhtrier.gdw2.sotf.Interfaces.IActionListener;
  * @author Lusito
  * @todo file paths need to be adapted when resource loader is ready.
  */
-public class Button {
-	/** Temp */
-	private MainMenuState menuState;
+public class Button extends Widget {
 	/** The font to write the message with */
 	private Font font;
 	/** The bounding rect */
@@ -31,6 +32,10 @@ public class Button {
 	public Color colors[];
 	/** An image for each state (null to ignore) */
 	public Image images[];
+	/** An action listener */
+	public IActionListener listener;
+	public State state = State.DEFAULT;
+	public Align align = Align.CENTER;
 	
 	/**
 	 * Mouse states
@@ -41,29 +46,27 @@ public class Button {
 		PRESSED
 	}
 	
+	public enum Align {
+		LEFT,
+		RIGHT,
+		CENTER
+	}
+	
 	private Button() {
 		int numStates = State.values().length;
 		colors = new Color[numStates];
 		images = new Image[numStates];
 	}
 
-	/**
-	 * @see org.newdawn.slick.state.BasicGameState#init(org.newdawn.slick.GameContainer, org.newdawn.slick.state.StateBasedGame)
-	 */
-	public void init(GameContainer container, MainMenuState menuState) throws SlickException {
-		this.menuState = menuState;
+	public void init(GameContainer container) throws SlickException {
 		if(font == null)
 			font = new AngelCodeFont("res/demo2.fnt","res/demo2_00.tga");
 	}
-	
-	/**
-	 * @see org.newdawn.slick.state.BasicGameState#render(org.newdawn.slick.GameContainer, org.newdawn.slick.state.StateBasedGame, org.newdawn.slick.Graphics)
-	 */
+
 	public void render(Graphics g) {
 		g.setFont(font);
 		float w = font.getWidth(text);
 		float h = font.getHeight(text);
-		State state = getState();
 		Color color = colors[state.ordinal()];
 		Image image = images[state.ordinal()];
 		if(color == null)
@@ -72,24 +75,63 @@ public class Button {
 			image = images[State.DEFAULT.ordinal()];
 		if(color != null) {
 			g.setColor(color);
-			g.drawString(text, rect.getCenterX() - w/2, rect.getCenterY() - h/2);
+			switch(align) {
+			case LEFT: 
+				g.drawString(text, rect.getX(), rect.getY());
+				break;
+			case RIGHT: 
+				g.drawString(text, rect.getMaxX() - w, rect.getMaxY() - h);
+				break;
+			case CENTER: 
+				g.drawString(text, rect.getCenterX() - w/2, rect.getCenterY() - h/2);
+				break;
+			}
 		}
 		if(image != null) {
 			image.draw(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
 		}
 	}
+
+	@Override
+	public boolean contains(int x, int y) {
+		return rect.contains(x, y);
+	}
 	
-	/**
-	 * Get the current state of the button
-	 * 
-	 * @return a State
-	 */
-	public State getState() {
-		if(!rect.contains(menuState.mouseX, menuState.mouseY))
-			return State.DEFAULT;
-		if(menuState.mouseDown)
-			return State.PRESSED;
-		return State.HOVER;
+	@Override
+	public void keyReleased(int key, char c) {
+		if(listener != null && key == Input.KEY_ENTER) {
+			listener.onAction();
+		}
+	}
+
+	@Override
+	public void mouseMoved(int oldx, int oldy, int newx, int newy) {
+		if(state != State.PRESSED) {
+			if(contains(newx, newy))
+				state = State.HOVER;
+			else
+				state = State.DEFAULT;
+		}
+	}
+
+	@Override
+	public void mouseReleased(int button, int x, int y) {
+		if(listener != null && contains(x, y)) {
+			listener.onAction();
+		}
+		
+		if(contains(x, y))
+			state = State.HOVER;
+		else
+			state = State.DEFAULT;
+	}
+
+	@Override
+	public void mousePressed(int button, int x, int y) {
+		if(contains(x, y))
+			state = State.PRESSED;
+		else
+			state = State.DEFAULT;
 	}
 	
 	/**
@@ -135,6 +177,17 @@ public class Button {
 	 */
 	public Button font(Font value) {
 		font = value;
+		return this;
+	}
+
+	/**
+	 * Change the align of the text
+	 * 
+	 * @param value the new value
+	 * @return this
+	 */
+	public Button align(Align value) {
+		align = value;
 		return this;
 	}
 
@@ -210,7 +263,8 @@ public class Button {
 	 * @param value the new value
 	 * @return this
 	 */
-	public Button action(IActionListener listener) {
+	public Button action(IActionListener value) {
+		listener = value;
 		return this;
 	}
 	

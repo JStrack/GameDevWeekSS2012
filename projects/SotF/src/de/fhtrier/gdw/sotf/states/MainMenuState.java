@@ -1,8 +1,5 @@
 package de.fhtrier.gdw.sotf.states;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.newdawn.slick.AngelCodeFont;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Font;
@@ -12,67 +9,103 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.EmptyTransition;
 
+import de.fhtrier.gdw2.sotf.SlickTestGameState;
 import de.fhtrier.gdw2.sotf.Interfaces.IActionListener;
 import de.fhtrier.gdw2.sotf.menu.Button;
+import de.fhtrier.gdw2.sotf.menu.MenuPage;
 
+/**
+ * Menu state
+ * 
+ * @author Lusito
+ */
 public class MainMenuState extends BasicGameState {
 	
 	int stateID = -1;
 	
-	public int mouseX, mouseY;
-	public boolean mouseDown;
-	public List<Button> buttons = new ArrayList<Button>();
 	private Font font;
+	MenuPage rootPage;
+	MenuPage currentPage;
 	
 	public MainMenuState(int stateID) {
 		this.stateID = stateID;
 	}
 
 	@Override
-	public void init(GameContainer container, StateBasedGame game)
+	public void init(final GameContainer container, final StateBasedGame game)
 			throws SlickException {
 		font = new AngelCodeFont("res/demo2.fnt","res/demo2_00.tga");
 
-		float x = container.getWidth()*0.5f;
-		float y = container.getHeight()*0.5f;
+		rootPage = currentPage = new MenuPage(container, game, this, null);
+		
+		float x = 100;
+		float y = 200;
 		float h = font.getLineHeight() * 1.2f;
-		addCenteredButton("Create a Game", x, y - h * 2);
-		addCenteredButton("Join a Game", x, y - h * 1);
-		addCenteredButton("Options", x, y);
-		addCenteredButton("Help", x, y + h * 1);
-		addCenteredButton("Exit", x, y + h * 2);
-		for(Button b: buttons)
-			b.init(container, this);
+		addLeftAlignedButton(container, "Create a Game", x, y - h * 2,
+				new IActionListener() {
+					public void onAction() {
+						game.enterState(SlickTestGameState.GAMEPLAYSTATE, new EmptyTransition(), new EmptyTransition());
+					}
+				});
+		addLeftAlignedButton(container, "Join a Game", x, y - h * 1,
+				new IActionListener() {
+			public void onAction() {
+				System.out.println("Join not present yet");
+			}
+		});
+		addLeftAlignedButton(container, "Options", x, y,
+				new IActionListener() {
+			public void onAction() {
+				System.out.println("Options not present yet");
+			}
+		});
+		addLeftAlignedButton(container, "Help", x, y + h * 1,
+				new IActionListener() {
+			public void onAction() {
+				System.out.println("Help not present yet");
+			}
+		});
+		addLeftAlignedButton(container, "Exit", x, y + h * 2,
+				new IActionListener() {
+			public void onAction() {
+				System.exit(0); // todo
+			}
+		});
 	}
 
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
 		g.clear();
-		for(Button b: buttons)
-			b.render(g);
+		g.setBackground(Color.black);
+		if(currentPage != null) {
+			currentPage.render(g);
+		}
 	}
 
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
-		// TODO Auto-generated method stub
-		
-		if (container.getInput().isKeyDown(Input.KEY_1)) {
-			game.enterState(1);
-		}
-		
 	}
 
 	@Override
 	public int getID() {
-		// TODO Auto-generated method stub
 		return stateID;
 	}
 	
+	
+	public void setPage(MenuPage page) {
+		if(page == null) {
+			currentPage = rootPage;
+			// close menu/switch to game state?
+		} else {
+			currentPage = page;
+		}
+	}
 
-	public void addCenteredButton(final String text, float x, float y) {
+	public void addCenteredButton(GameContainer container, final String text, float x, float y, IActionListener listener) throws SlickException {
 		float w = font.getWidth(text);
 		float h = font.getHeight(text);
 
@@ -81,31 +114,42 @@ public class MainMenuState extends BasicGameState {
 			.color(Color.gray)
 			.hoverColor(Color.white)
 			.pressedColor(Color.red)
-			.action(
-				new IActionListener() {
-					public void onAction() {
-						System.out.println("Button '" + text + "' pressed");
-					}
-				}
-			);
-		buttons.add(button);
+			.action(listener);
+		currentPage.addWidget(button);
+		button.init(container);
+	}
+	
+	public void addLeftAlignedButton(GameContainer container, final String text, float x, float y, IActionListener listener) throws SlickException {
+		float w = font.getWidth(text);
+		float h = font.getHeight(text);
+
+		Button button = Button.create(text, x, y, w, h)
+			.font(font)
+			.color(Color.gray)
+			.hoverColor(Color.white)
+			.pressedColor(Color.red)
+			.action(listener);
+		currentPage.addWidget(button);
+		button.init(container);
 	}
 
 	public void keyReleased(int key, char c) {
-		if (key == Input.KEY_ESCAPE) {
-		}
+		if(currentPage != null)
+			currentPage.keyReleased(key, c);
 	}
 	
 	public void mouseMoved(int oldx, int oldy, int newx, int newy) {
-		mouseX = newx;
-		mouseY = newy;
+		if(currentPage != null)
+			currentPage.mouseMoved(oldx, oldy, newx, newy);
 	}
 
 	public void mouseReleased(int button, int x, int y) {
-		mouseDown = false;
+		if(currentPage != null)
+			currentPage.mouseReleased(button, x, y);
 	}
 	
 	public void mousePressed(int button, int x, int y) {
-		mouseDown = true;
+		if(currentPage != null)
+			currentPage.mousePressed(button, x, y);
 	}
 }

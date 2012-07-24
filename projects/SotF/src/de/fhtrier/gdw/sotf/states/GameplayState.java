@@ -7,45 +7,52 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.state.transition.EmptyTransition;
 
+import de.fhtrier.gdw2.sotf.SlickTestGameState;
+
+/**
+ * Gameplay state
+ * 
+ * @author Lusito
+ */
 public class GameplayState extends BasicGameState {
 
 	int stateID = -1;
+	GameContainer container;
+	StateBasedGame game;
 	
 	public GameplayState(int stateID) {
 		this.stateID = stateID;
 	}
 	
 	@Override
-	public void init(GameContainer arg0, StateBasedGame arg1)
+	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
-		// TODO Auto-generated method stub
+		this.container = container;
+		this.game = game;
 		
 	}
 
 	@Override
-	public void render(GameContainer arg0, StateBasedGame arg1, Graphics arg2)
+	public void render(GameContainer container, StateBasedGame game, Graphics g)
 			throws SlickException {
-		// TODO Auto-generated method stub
-		arg2.setBackground(Color.blue);
+		g.setBackground(Color.darkGray);
 		
 	}
 
 	@Override
-	public void update(GameContainer arg0, StateBasedGame arg1, int arg2)
+	public void update(GameContainer container, StateBasedGame game, int delta)
 			throws SlickException {
-		// TODO Auto-generated method stub
-		
-		if (arg0.getInput().isKeyDown(Input.KEY_2)) {
-			arg1.enterState(0);
-		}
-		
 	}
 
 	@Override
 	public int getID() {
-		// TODO Auto-generated method stub
 		return stateID;
 	}
 
+	public void keyReleased(int key, char c) {
+		if(key == Input.KEY_ESCAPE)
+			game.enterState(SlickTestGameState.MAINMENUSTATE, new EmptyTransition(), new EmptyTransition());
+	}
 }
