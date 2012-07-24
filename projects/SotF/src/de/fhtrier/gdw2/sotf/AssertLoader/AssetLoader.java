@@ -1,4 +1,4 @@
-package de.fhtrier.gdw2.sotf;
+package de.fhtrier.gdw2.sotf.AssertLoader;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -11,44 +11,59 @@ public interface IPlayer extends IEntity
      * @param velo
      *            the Vector that specifies the new velocity of the player
      */
-    public void setVelocity(Vector2f velo);
+    public abstract void setVelocity(Vector2f velo);
 
     /**
      * @return the current velocity of the player
      */
-    public Vector2f getVelocity();
+    public abstract Vector2f getVelocity();
 
     /**
      * @param eat
      *            the Eatable item that affects the player
      */
-    public void eat(IEatable eat);
+    public abstract void eat(IEatable eat);
 
     /**
      * @param number
      *            the number of the Usable in the player's Inventory
      * @return the Usable item that is to be placed on the world
      */
-    public IUseable use(int number);
+    public abstract IUseable use(int number);
 
     /**
      * @return the Inventory of the player as an array of Useables
      */
-    public IUseable[] getInventory();
+    public abstract IUseable[] getInventory();
 
     /**
      * @return list of Powerups that are currently active on the player
      */
-    public List<IPowerups> getPowerups();
+    public abstract List<IPowerups> getPowerups();
 
     /**
      * @return the team the player belongs to
      */
-    public ITeam getTeam();
+    public abstract ITeam getTeam();
 
     /**
      * @return whether the player is alive or dead
      */
-    public boolean isDead();
+    public abstract boolean isDead();
+
+    /**
+     * @return whether the player is eatable
+     */
+    public abstract boolean isEatable();
+
+    /**
+     * @author Robin Dick
+     */
+    public IUseable getUseable();
+
+    /**
+     * @author Robin Dick
+     */
+    public float getEnergy();
 
 }
