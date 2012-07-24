@@ -7,12 +7,9 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
-import org.newdawn.slick.KeyListener;
-import org.newdawn.slick.MouseListener;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 
-import de.fhtrier.gdw.sotf.states.MainMenuState;
 import de.fhtrier.gdw2.sotf.Interfaces.IActionListener;
 
 /**
@@ -60,7 +57,7 @@ public class Button extends Widget {
 
 	public void init(GameContainer container) throws SlickException {
 		if(font == null)
-			font = new AngelCodeFont("res/demo2.fnt","res/demo2_00.tga");
+			font = new AngelCodeFont("res/fonts/verdana_46.fnt","res/fonts/verdana_46_0.tga");
 	}
 
 	public void render(Graphics g) {
